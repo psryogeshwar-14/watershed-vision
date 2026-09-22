@@ -1,0 +1,65 @@
+version: '3.9'
+
+services:
+  # ── PostgreSQL + PostGIS ──────────────────────────────────────────────────
+  db:
+    image: postgis/postgis:15-3.3
+    container_name: watershed_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: watershed_db
+      POSTGRES_USER: watershed_user
+      POSTGRES_PASSWORD: watershed_pass
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./scripts/init_db.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U watershed_user -d watershed_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ── FastAPI Backend ───────────────────────────────────────────────────────
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: watershed_backend
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql+asyncpg://watershed_user:watershed_pass@db:5432/watershed_db
+      UPLOAD_DIR: /app/uploads
+      SECRET_KEY: change-me-in-production-very-long-secret-key-here
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      GEE_SERVICE_ACCOUNT: ${GEE_SERVICE_ACCOUNT:-}
+      GEE_KEY_FILE: ${GEE_KEY_FILE:-}
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+      - upload_data:/app/uploads
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+
+  # ── React Frontend (dev) ──────────────────────────────────────────────────
+  frontend:
+    image: node:20-alpine
+    container_name: watershed_frontend
+    restart: unless-stopped
+    working_dir: /app
+    environment:
+      VITE_API_BASE_URL: http://localhost:8000
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    command: sh -c "npm install && npm run dev -- --host 0.0.0.0"
+
+volumes:
+  pgdata:
+  upload_data:

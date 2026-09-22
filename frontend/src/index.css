@@ -1,0 +1,188 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── Base ─────────────────────────────────────────────────── */
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+
+  #root {
+    height: 100%;
+  }
+}
+
+/* ─── Leaflet Map Overrides ────────────────────────────────── */
+.leaflet-container {
+  @apply rounded-xl;
+  z-index: 0;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+.leaflet-control-zoom {
+  @apply shadow-lg border-0 rounded-lg overflow-hidden;
+}
+
+.leaflet-control-zoom a {
+  @apply bg-white text-watershed-green font-bold hover:bg-primary-50 transition-colors;
+  border: none !important;
+}
+
+.leaflet-control-attribution {
+  @apply text-xs opacity-60;
+}
+
+/* Custom marker cluster styles */
+.marker-cluster-small,
+.marker-cluster-medium,
+.marker-cluster-large {
+  @apply bg-primary-500 border-4 border-primary-200 rounded-full flex items-center justify-center text-white font-bold;
+}
+
+.marker-cluster-small {
+  @apply bg-primary-400;
+  width: 36px !important;
+  height: 36px !important;
+}
+
+.marker-cluster-medium {
+  @apply bg-primary-600;
+  width: 44px !important;
+  height: 44px !important;
+}
+
+.marker-cluster-large {
+  @apply bg-primary-800;
+  width: 52px !important;
+  height: 52px !important;
+}
+
+.marker-cluster div {
+  @apply text-white font-bold text-sm flex items-center justify-center h-full;
+}
+
+/* Popup styling */
+.leaflet-popup-content-wrapper {
+  @apply rounded-xl shadow-xl border border-gray-100 p-0 overflow-hidden;
+}
+
+.leaflet-popup-content {
+  margin: 0 !important;
+  @apply w-72;
+}
+
+.leaflet-popup-tip-container {
+  @apply mt-0;
+}
+
+/* ─── Sidebar ────────────────────────────────────────────────── */
+.sidebar {
+  @apply bg-white shadow-card border-r border-gray-200 transition-all duration-300 flex flex-col;
+}
+
+.sidebar.collapsed {
+  @apply w-14;
+}
+
+.sidebar.expanded {
+  @apply w-72;
+}
+
+/* ─── Custom scrollbar ────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-gray-100 rounded-full;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-primary-300 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-primary-500;
+}
+
+/* ─── Card components ─────────────────────────────────────────── */
+@layer components {
+  .stat-card {
+    @apply bg-white rounded-xl p-5 shadow-card border border-gray-100 flex flex-col gap-2 hover:shadow-md transition-shadow;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center gap-2 px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg font-medium text-sm transition-colors shadow-sm;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center gap-2 px-4 py-2 bg-secondary-600 hover:bg-secondary-700 text-white rounded-lg font-medium text-sm transition-colors shadow-sm;
+  }
+
+  .btn-outline {
+    @apply inline-flex items-center gap-2 px-4 py-2 border border-primary-600 text-primary-700 hover:bg-primary-50 rounded-lg font-medium text-sm transition-colors;
+  }
+
+  .badge {
+    @apply inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold;
+  }
+
+  .badge-green  { @apply bg-green-100 text-green-800; }
+  .badge-blue   { @apply bg-blue-100 text-blue-800; }
+  .badge-amber  { @apply bg-amber-100 text-amber-800; }
+  .badge-brown  { @apply bg-orange-100 text-orange-800; }
+  .badge-purple { @apply bg-purple-100 text-purple-800; }
+  .badge-red    { @apply bg-red-100 text-red-800; }
+  .badge-teal   { @apply bg-teal-100 text-teal-800; }
+  .badge-gray   { @apply bg-gray-100 text-gray-800; }
+
+  .section-title {
+    @apply text-lg font-semibold text-gray-800;
+  }
+
+  .form-label {
+    @apply block text-sm font-medium text-gray-700 mb-1;
+  }
+
+  .form-input {
+    @apply w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 transition-colors;
+  }
+
+  .form-select {
+    @apply w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 transition-colors bg-white;
+  }
+}
+
+/* ─── Map container heights ───────────────────────────────────── */
+.map-container-full {
+  height: calc(100vh - 64px);
+}
+
+.map-container-split {
+  height: 420px;
+}
+
+/* ─── Animations ──────────────────────────────────────────────── */
+.animate-pulse-slow {
+  animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* ─── Legend ─────────────────────────────────────────────────── */
+.legend-gradient {
+  height: 12px;
+  border-radius: 4px;
+  background: linear-gradient(to right, #313695, #4575b4, #74add1, #abd9e9, #e0f3f8, #ffffbf, #fee090, #fdae61, #f46d43, #d73027, #a50026);
+}
+
+.legend-gradient-ndwi {
+  background: linear-gradient(to right, #d73027, #ffffbf, #4575b4);
+}
