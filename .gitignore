@@ -39,6 +39,7 @@ data/
 !package.json
 !tsconfig.json
 !project.json
+!vercel.json
 
 # IDE
 .vscode/
