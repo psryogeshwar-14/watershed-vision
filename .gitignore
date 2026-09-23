@@ -31,8 +31,8 @@ ml_models/models/*.h5
 ml_models/models/*.pkl
 
 # Data files
-scripts/sample_data.json
 data/
+!scripts/sample_data.json
 
 # GEE credentials
 *.json
@@ -40,6 +40,7 @@ data/
 !tsconfig.json
 !project.json
 !vercel.json
+!scripts/sample_data.json
 
 # IDE
 .vscode/

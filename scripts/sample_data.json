@@ -1,0 +1,510 @@
+{
+  "watersheds": [
+    {
+      "name": "Bhor Watershed - Maharashtra",
+      "state": "Maharashtra",
+      "district": "Pune",
+      "area_ha": 2450.5,
+      "status": "active",
+      "center": [
+        18.152,
+        73.846
+      ],
+      "boundary": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              73.8,
+              18.1
+            ],
+            [
+              73.9,
+              18.1
+            ],
+            [
+              73.9,
+              18.2
+            ],
+            [
+              73.8,
+              18.2
+            ],
+            [
+              73.8,
+              18.1
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "name": "Alwar Watershed - Rajasthan",
+      "state": "Rajasthan",
+      "district": "Alwar",
+      "area_ha": 3820.0,
+      "status": "active",
+      "center": [
+        27.563,
+        76.629
+      ],
+      "boundary": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              76.58,
+              27.52
+            ],
+            [
+              76.68,
+              27.52
+            ],
+            [
+              76.68,
+              27.62
+            ],
+            [
+              76.58,
+              27.62
+            ],
+            [
+              76.58,
+              27.52
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "name": "Tumkur Watershed - Karnataka",
+      "state": "Karnataka",
+      "district": "Tumkur",
+      "area_ha": 1890.3,
+      "status": "completed",
+      "center": [
+        13.34,
+        77.101
+      ],
+      "boundary": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              77.05,
+              13.29
+            ],
+            [
+              77.15,
+              13.29
+            ],
+            [
+              77.15,
+              13.39
+            ],
+            [
+              77.05,
+              13.39
+            ],
+            [
+              77.05,
+              13.29
+            ]
+          ]
+        ]
+      }
+    }
+  ],
+  "images": [
+    {
+      "watershed_id": "ws-001",
+      "filename": "sample_ws-001_000.jpg",
+      "latitude": 18.141655,
+      "longitude": 73.843305,
+      "altitude": 687.1,
+      "activity_type": "check_dam",
+      "ai_label": "Check Dam / Gabion Structure",
+      "ai_confidence": 0.975,
+      "ai_description": "A concrete/masonry check dam is visible across a small nala, designed to slow water flow and promote groundwater recharge. The structure appears to be in good condition with slight sedimentation upstream.",
+      "captured_at": "2026-08-11T15:01:42.532668",
+      "is_processed": true
+    },
+    {
+      "watershed_id": "ws-001",
+      "filename": "sample_ws-001_001.jpg",
+      "latitude": 18.144326,
+      "longitude": 73.874236,
+      "altitude": 712.6,
+      "activity_type": "contour_bund",
+      "ai_label": "Contour Bund / Trench",
+      "ai_confidence": 0.743,
+      "ai_description": "Contour bunds are visible along the hillside, constructed perpendicular to the slope to retain rainwater and reduce runoff. These earthen embankments help prevent soil erosion.",
+      "captured_at": "2026-09-07T15:01:42.532683",
+      "is_processed": true
+    },
+    {
+      "watershed_id": "ws-001",
+      "filename": "sample_ws-001_002.jpg",
+      "latitude": 18.12103,
+      "longitude": 73.872904,
+      "altitude": 646.0,
+      "activity_type": "drainage",
+      "ai_label": "Drainage Channel",
+      "ai_confidence": 0.856,
+      "ai_description": "A lined drainage channel is visible directing surface runoff away from agricultural fields. The channel appears to be well-maintained.",
+      "captured_at": "2026-08-12T15:01:42.532688",
+      "is_processed": true
+    },
+    {
+      "watershed_id": "ws-001",
+      "filename": "sample_ws-001_003.jpg",
+      "latitude": 18.15067,
+      "longitude": 73.863542,
+      "altitude": 474.6,
+      "activity_type": "check_dam",
+      "ai_label": "Check Dam / Gabion Structure",
+      "ai_confidence": 0.831,
+      "ai_description": "A concrete/masonry check dam is visible across a small nala, designed to slow water flow and promote groundwater recharge. The structure appears to be in good condition with slight sedimentation upstream.",
+      "captured_at": "2026-09-10T15:01:42.532692",
+      "is_processed": true
+    },
+    {
+      "watershed_id": "ws-001",
+      "filename": "sample_ws-001_004.jpg",
+      "latitude": 18.122378,
+      "longitude": 73.839947,
+      "altitude": 363.4,
+      "activity_type": "contour_bund",
+      "ai_label": "Contour Bund / Trench",
+      "ai_confidence": 0.784,
+      "ai_description": "Contour bunds are visible along the hillside, constructed perpendicular to the slope to retain rainwater and reduce runoff. These earthen embankments help prevent soil erosion.",
+      "captured_at": "2026-05-04T15:01:42.532696",
+      "is_processed": true
+    },
+    {
+      "watershed_id": "ws-001",
+      "filename": "sample_ws-001_005.jpg",
+      "latitude": 18.114928,
+      "longitude": 73.871002,
+      "altitude": 384.2,
+      "activity_type": "other",
+      "ai_label": "Other Activity",
+      "ai_confidence": 0.959,
+      "ai_description": "A general watershed development activity is visible at this location requiring detailed field assessment for proper classification.",
+      "captured_at": "2026-04-21T15:01:42.532700",
+      "is_processed": true
+    },
+    {
+      "watershed_id": "ws-001",
+      "filename": "sample_ws-001_006.jpg",
+      "latitude": 18.119369,
+      "longitude": 73.872537,
+      "altitude": 369.6,
+      "activity_type": "water_body",
+      "ai_label": "Water Body / Farm Pond",
+      "ai_confidence": 0.833,
+      "ai_description": "A farm pond or percolation tank is visible, constructed to capture and store monsoon runoff. The water body appears to have good water retention capacity.",
+      "captured_at": "2026-08-23T15:01:42.532704",
+      "is_processed": true
+    },
+    {
+      "watershed_id": "ws-001",
+      "filename": "sample_ws-001_007.jpg",
+      "latitude": 18.140051,
+      "longitude": 73.848839,
+      "altitude": 385.1,
+      "activity_type": "check_dam",
+      "ai_label": "Check Dam / Gabion Structure",
+      "ai_confidence": 0.763,
+      "ai_description": "A concrete/masonry check dam is visible across a small nala, designed to slow water flow and promote groundwater recharge. The structure appears to be in good condition with slight sedimentation upstream.",
+      "captured_at": "2026-07-25T15:01:42.532707",
+      "is_processed": true
+    },
+    {
+      "watershed_id": "ws-001",
+      "filename": "sample_ws-001_008.jpg",
+      "latitude": 18.178542,
+      "longitude": 73.876599,
+      "altitude": 759.1,
+      "activity_type": "drainage",
+      "ai_label": "Drainage Channel",
+      "ai_confidence": 0.743,
+      "ai_description": "A lined drainage channel is visible directing surface runoff away from agricultural fields. The channel appears to be well-maintained.",
+      "captured_at": "2026-06-19T15:01:42.532710",
+      "is_processed": true
+    },
+    {
+      "watershed_id": "ws-001",
+      "filename": "sample_ws-001_009.jpg",
+      "latitude": 18.182258,
+      "longitude": 73.840886,
+      "altitude": 762.1,
+      "activity_type": "soil_erosion",
+      "ai_label": "Soil Erosion / Degraded Land",
+      "ai_confidence": 0.94,
+      "ai_description": "Active gully erosion is visible with exposed subsoil and rill formations. This site requires immediate bio-engineering and structural interventions.",
+      "captured_at": "2026-08-22T15:01:42.532713",
+      "is_processed": true
+    },
+    {
+      "watershed_id": "ws-002",
+      "filename": "sample_ws-002_000.jpg",
+      "latitude": 27.530059,
+      "longitude": 76.631797,
+      "altitude": 551.7,
+      "activity_type": "water_body",
+      "ai_label": "Water Body / Farm Pond",
+      "ai_confidence": 0.818,
+      "ai_description": "A farm pond or percolation tank is visible, constructed to capture and store monsoon runoff. The water body appears to have good water retention capacity.",
+      "captured_at": "2026-04-27T15:01:42.532722",
+      "is_processed": true
+    },
+    {
+      "watershed_id": "ws-002",
+      "filename": "sample_ws-002_001.jpg",
+      "latitude": 27.553853,
+      "longitude": 76.666712,
+      "altitude": 447.0,
+      "activity_type": "other",
+      "ai_label": "Other Activity",
+      "ai_confidence": 0.744,
+      "ai_description": "A general watershed development activity is visible at this location requiring detailed field assessment for proper classification.",
+      "captured_at": "2026-04-10T15:01:42.532726",
+      "is_processed": true
+    },
+    {
+      "watershed_id": "ws-002",
+      "filename": "sample_ws-002_002.jpg",
+      "latitude": 27.59,
+      "longitude": 76.647171,
+      "altitude": 423.0,
+      "activity_type": "drainage",
+      "ai_label": "Drainage Channel",
+      "ai_confidence": 0.951,
+      "ai_description": "A lined drainage channel is visible directing surface runoff away from agricultural fields. The channel appears to be well-maintained.",
+      "captured_at": "2026-05-18T15:01:42.532729",
+      "is_processed": true
+    },
+    {
+      "watershed_id": "ws-002",
+      "filename": "sample_ws-002_003.jpg",
+      "latitude": 27.548197,
+      "longitude": 76.610788,
+      "altitude": 641.4,
+      "activity_type": "afforestation",
+      "ai_label": "Afforestation / Plantation",
+      "ai_confidence": 0.781,
+      "ai_description": "A plantation site showing young saplings of native species at approximately 3m x 3m spacing. The plantation appears healthy with good canopy coverage developing.",
+      "captured_at": "2026-09-22T15:01:42.532732",
+      "is_processed": true
+    },
+    {
+      "watershed_id": "ws-002",
+      "filename": "sample_ws-002_004.jpg",
+      "latitude": 27.536588,
+      "longitude": 76.597706,
+      "altitude": 244.0,
+      "activity_type": "drainage",
+      "ai_label": "Drainage Channel",
+      "ai_confidence": 0.931,
+      "ai_description": "A lined drainage channel is visible directing surface runoff away from agricultural fields. The channel appears to be well-maintained.",
+      "captured_at": "2026-06-17T15:01:42.532735",
+      "is_processed": true
+    },
+    {
+      "watershed_id": "ws-002",
+      "filename": "sample_ws-002_005.jpg",
+      "latitude": 27.571929,
+      "longitude": 76.596495,
+      "altitude": 265.4,
+      "activity_type": "drainage",
+      "ai_label": "Drainage Channel",
+      "ai_confidence": 0.952,
+      "ai_description": "A lined drainage channel is visible directing surface runoff away from agricultural fields. The channel appears to be well-maintained.",
+      "captured_at": "2026-04-09T15:01:42.532738",
+      "is_processed": true
+    },
+    {
+      "watershed_id": "ws-002",
+      "filename": "sample_ws-002_006.jpg",
+      "latitude": 27.526588,
+      "longitude": 76.648525,
+      "altitude": 420.7,
+      "activity_type": "soil_erosion",
+      "ai_label": "Soil Erosion / Degraded Land",
+      "ai_confidence": 0.813,
+      "ai_description": "Active gully erosion is visible with exposed subsoil and rill formations. This site requires immediate bio-engineering and structural interventions.",
+      "captured_at": "2026-05-12T15:01:42.532741",
+      "is_processed": true
+    },
+    {
+      "watershed_id": "ws-002",
+      "filename": "sample_ws-002_007.jpg",
+      "latitude": 27.525583,
+      "longitude": 76.648686,
+      "altitude": 579.9,
+      "activity_type": "soil_erosion",
+      "ai_label": "Soil Erosion / Degraded Land",
+      "ai_confidence": 0.967,
+      "ai_description": "Active gully erosion is visible with exposed subsoil and rill formations. This site requires immediate bio-engineering and structural interventions.",
+      "captured_at": "2026-05-28T15:01:42.532745",
+      "is_processed": true
+    },
+    {
+      "watershed_id": "ws-002",
+      "filename": "sample_ws-002_008.jpg",
+      "latitude": 27.546518,
+      "longitude": 76.594142,
+      "altitude": 394.8,
+      "activity_type": "check_dam",
+      "ai_label": "Check Dam / Gabion Structure",
+      "ai_confidence": 0.965,
+      "ai_description": "A concrete/masonry check dam is visible across a small nala, designed to slow water flow and promote groundwater recharge. The structure appears to be in good condition with slight sedimentation upstream.",
+      "captured_at": "2026-05-02T15:01:42.532748",
+      "is_processed": true
+    },
+    {
+      "watershed_id": "ws-002",
+      "filename": "sample_ws-002_009.jpg",
+      "latitude": 27.567867,
+      "longitude": 76.645884,
+      "altitude": 308.5,
+      "activity_type": "drainage",
+      "ai_label": "Drainage Channel",
+      "ai_confidence": 0.834,
+      "ai_description": "A lined drainage channel is visible directing surface runoff away from agricultural fields. The channel appears to be well-maintained.",
+      "captured_at": "2026-07-03T15:01:42.532751",
+      "is_processed": true
+    },
+    {
+      "watershed_id": "ws-003",
+      "filename": "sample_ws-003_000.jpg",
+      "latitude": 13.354058,
+      "longitude": 77.073288,
+      "altitude": 286.6,
+      "activity_type": "soil_erosion",
+      "ai_label": "Soil Erosion / Degraded Land",
+      "ai_confidence": 0.875,
+      "ai_description": "Active gully erosion is visible with exposed subsoil and rill formations. This site requires immediate bio-engineering and structural interventions.",
+      "captured_at": "2026-09-09T15:01:42.532757",
+      "is_processed": true
+    },
+    {
+      "watershed_id": "ws-003",
+      "filename": "sample_ws-003_001.jpg",
+      "latitude": 13.305544,
+      "longitude": 77.08582,
+      "altitude": 546.3,
+      "activity_type": "drainage",
+      "ai_label": "Drainage Channel",
+      "ai_confidence": 0.794,
+      "ai_description": "A lined drainage channel is visible directing surface runoff away from agricultural fields. The channel appears to be well-maintained.",
+      "captured_at": "2026-08-15T15:01:42.532760",
+      "is_processed": true
+    },
+    {
+      "watershed_id": "ws-003",
+      "filename": "sample_ws-003_002.jpg",
+      "latitude": 13.314734,
+      "longitude": 77.095766,
+      "altitude": 276.3,
+      "activity_type": "soil_erosion",
+      "ai_label": "Soil Erosion / Degraded Land",
+      "ai_confidence": 0.919,
+      "ai_description": "Active gully erosion is visible with exposed subsoil and rill formations. This site requires immediate bio-engineering and structural interventions.",
+      "captured_at": "2026-09-14T15:01:42.532763",
+      "is_processed": true
+    },
+    {
+      "watershed_id": "ws-003",
+      "filename": "sample_ws-003_003.jpg",
+      "latitude": 13.312708,
+      "longitude": 77.081665,
+      "altitude": 234.2,
+      "activity_type": "drainage",
+      "ai_label": "Drainage Channel",
+      "ai_confidence": 0.803,
+      "ai_description": "A lined drainage channel is visible directing surface runoff away from agricultural fields. The channel appears to be well-maintained.",
+      "captured_at": "2026-08-30T15:01:42.532766",
+      "is_processed": true
+    },
+    {
+      "watershed_id": "ws-003",
+      "filename": "sample_ws-003_004.jpg",
+      "latitude": 13.326423,
+      "longitude": 77.11691,
+      "altitude": 368.1,
+      "activity_type": "water_body",
+      "ai_label": "Water Body / Farm Pond",
+      "ai_confidence": 0.958,
+      "ai_description": "A farm pond or percolation tank is visible, constructed to capture and store monsoon runoff. The water body appears to have good water retention capacity.",
+      "captured_at": "2026-07-02T15:01:42.532769",
+      "is_processed": true
+    },
+    {
+      "watershed_id": "ws-003",
+      "filename": "sample_ws-003_005.jpg",
+      "latitude": 13.369904,
+      "longitude": 77.095753,
+      "altitude": 241.5,
+      "activity_type": "contour_bund",
+      "ai_label": "Contour Bund / Trench",
+      "ai_confidence": 0.832,
+      "ai_description": "Contour bunds are visible along the hillside, constructed perpendicular to the slope to retain rainwater and reduce runoff. These earthen embankments help prevent soil erosion.",
+      "captured_at": "2026-06-26T15:01:42.532773",
+      "is_processed": true
+    },
+    {
+      "watershed_id": "ws-003",
+      "filename": "sample_ws-003_006.jpg",
+      "latitude": 13.321193,
+      "longitude": 77.111194,
+      "altitude": 773.2,
+      "activity_type": "contour_bund",
+      "ai_label": "Contour Bund / Trench",
+      "ai_confidence": 0.937,
+      "ai_description": "Contour bunds are visible along the hillside, constructed perpendicular to the slope to retain rainwater and reduce runoff. These earthen embankments help prevent soil erosion.",
+      "captured_at": "2026-07-27T15:01:42.532776",
+      "is_processed": true
+    },
+    {
+      "watershed_id": "ws-003",
+      "filename": "sample_ws-003_007.jpg",
+      "latitude": 13.367116,
+      "longitude": 77.097202,
+      "altitude": 387.6,
+      "activity_type": "contour_bund",
+      "ai_label": "Contour Bund / Trench",
+      "ai_confidence": 0.774,
+      "ai_description": "Contour bunds are visible along the hillside, constructed perpendicular to the slope to retain rainwater and reduce runoff. These earthen embankments help prevent soil erosion.",
+      "captured_at": "2026-08-09T15:01:42.532779",
+      "is_processed": true
+    },
+    {
+      "watershed_id": "ws-003",
+      "filename": "sample_ws-003_008.jpg",
+      "latitude": 13.317424,
+      "longitude": 77.089083,
+      "altitude": 687.1,
+      "activity_type": "check_dam",
+      "ai_label": "Check Dam / Gabion Structure",
+      "ai_confidence": 0.791,
+      "ai_description": "A concrete/masonry check dam is visible across a small nala, designed to slow water flow and promote groundwater recharge. The structure appears to be in good condition with slight sedimentation upstream.",
+      "captured_at": "2026-04-15T15:01:42.532782",
+      "is_processed": true
+    },
+    {
+      "watershed_id": "ws-003",
+      "filename": "sample_ws-003_009.jpg",
+      "latitude": 13.312266,
+      "longitude": 77.096465,
+      "altitude": 520.6,
+      "activity_type": "check_dam",
+      "ai_label": "Check Dam / Gabion Structure",
+      "ai_confidence": 0.968,
+      "ai_description": "A concrete/masonry check dam is visible across a small nala, designed to slow water flow and promote groundwater recharge. The structure appears to be in good condition with slight sedimentation upstream.",
+      "captured_at": "2026-08-06T15:01:42.532785",
+      "is_processed": true
+    }
+  ]
+}
