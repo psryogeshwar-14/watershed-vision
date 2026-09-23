@@ -47,6 +47,7 @@ data/
 *.swp
 *.swo
 .DS_Store
+*.code-workspace
 
 # Logs
 *.log
