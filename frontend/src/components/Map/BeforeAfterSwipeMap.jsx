@@ -64,7 +64,7 @@ export default function BeforeAfterSwipeMap({
 
           <div className="bg-amber-950/80 border border-amber-800 px-3 py-1.5 rounded-lg flex items-center gap-1.5 text-amber-300">
             <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-            <span className="font-semibold">Moisture:</span>
+            <span className="font-semibold">{t('metricMoisture')}:</span>
             <span className="font-bold text-white">+{moistureGainPct}%</span>
           </div>
         </div>
@@ -161,11 +161,11 @@ export default function BeforeAfterSwipeMap({
         <div className="flex items-center gap-3">
           <span className="flex items-center gap-1.5">
             <span className="w-2.5 h-2.5 rounded-sm bg-amber-600 inline-block" />
-            Dry Baseline: 0.22 NDVI
+            {t('dryBaselineStat')}
           </span>
           <span className="flex items-center gap-1.5">
             <span className="w-2.5 h-2.5 rounded-sm bg-emerald-500 inline-block" />
-            Treated: 0.43 NDVI
+            {t('treatedStat')}
           </span>
         </div>
       </div>

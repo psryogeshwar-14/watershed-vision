@@ -186,3 +186,92 @@
 .legend-gradient-ndwi {
   background: linear-gradient(to right, #d73027, #ffffbf, #4575b4);
 }
+
+/* ─── Print Styles ────────────────────────────────────────────── */
+@media print {
+  /* Hide all website chrome, navigation, toolbars, buttons, sidebars, interactive controls */
+  nav,
+  header,
+  footer,
+  aside,
+  button,
+  .no-print,
+  .sidebar,
+  .leaflet-control,
+  .leaflet-pane,
+  .leaflet-top,
+  .leaflet-bottom {
+    display: none !important;
+  }
+
+  /* Reset layout constraints & background colors for clean print */
+  html,
+  body,
+  #root,
+  .min-h-screen,
+  main {
+    background: #ffffff !important;
+    color: #111827 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    min-height: auto !important;
+    height: auto !important;
+    overflow: visible !important;
+    width: 100% !important;
+  }
+
+  /* Expand wrapper elements to prevent sidebars or columns from constricting the report */
+  .max-w-7xl,
+  .grid,
+  .lg\:col-span-3,
+  .lg\:col-span-4 {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Dossier report container formatting */
+  #dossier-printable {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 auto !important;
+    padding: 8mm 12mm !important;
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    background: #ffffff !important;
+    color: #111827 !important;
+  }
+
+  /* Force background colors, badges, borders and gradients to print */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  /* Prevent page-breaks in the middle of tables or sections */
+  #dossier-printable > div {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  table {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  tr {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  @page {
+    size: A4 portrait;
+    margin: 8mm;
+  }
+}
+

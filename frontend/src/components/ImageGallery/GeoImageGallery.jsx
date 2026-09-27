@@ -4,6 +4,7 @@ import { SlidersHorizontal, ChevronLeft, ChevronRight, Search, MapPin, Calendar,
 import clsx from 'clsx'
 import { useGeoImages, useWatersheds, MOCK_GEO_IMAGES } from '../../hooks/useWatershedData.js'
 import ImageDetailModal from './ImageDetailModal.jsx'
+import { useLanguage } from '../../services/i18n.js'
 
 const ACTIVITY_TYPES = [
   { value: '',              label: 'All Types' },
@@ -26,7 +27,7 @@ const BADGE_MAP = {
   other:         'bg-gray-800 text-gray-300 border-gray-700',
 }
 
-function ConfidenceBar({ value }) {
+function ConfidenceBar({ value, t }) {
   const pct = Math.round((value ?? 0) * 100)
   const color = pct >= 80 ? '#22c55e' : pct >= 60 ? '#f59e0b' : '#ef4444'
   return (
@@ -34,7 +35,7 @@ function ConfidenceBar({ value }) {
       <div className="flex justify-between text-[11px] mb-1">
         <span className="text-gray-400 flex items-center gap-1">
           <Sparkles className="w-3 h-3 text-emerald-400" />
-          AI Confidence
+          {t ? t('aiConfidence') : 'AI Confidence'}
         </span>
         <span className="font-semibold" style={{ color }}>{pct}%</span>
       </div>
@@ -45,9 +46,13 @@ function ConfidenceBar({ value }) {
   )
 }
 
-function ImageCard({ image, onClick }) {
+function ImageCard({ image, onClick, t }) {
   const badgeCls = BADGE_MAP[image.activity_type] ?? 'bg-gray-800 text-gray-300 border-gray-700'
-  const label = ACTIVITY_TYPES.find((a) => a.value === image.activity_type)?.label ?? 'Other'
+  const translated = t ? t(image.activity_type) : null
+  const label = (translated && translated !== image.activity_type)
+    ? translated
+    : (ACTIVITY_TYPES.find((a) => a.value === image.activity_type)?.label ?? 'Other')
+
   return (
     <div
       onClick={() => onClick(image)}
@@ -85,7 +90,7 @@ function ImageCard({ image, onClick }) {
         </div>
 
         <div className="pt-2 border-t border-gray-800/80 space-y-2">
-          <ConfidenceBar value={image.confidence} />
+          <ConfidenceBar value={image.confidence} t={t} />
           <p className="text-[11px] text-gray-500 flex items-center gap-1.5">
             <Calendar className="w-3 h-3 text-gray-500" />
             {image.captured_at ? format(new Date(image.captured_at), 'dd MMM yyyy, HH:mm') : '—'}
@@ -97,6 +102,7 @@ function ImageCard({ image, onClick }) {
 }
 
 export default function GeoImageGallery({ defaultWatershedId }) {
+  const { t } = useLanguage()
   const [activityType, setActivityType] = useState('')
   const [watershedId,  setWatershedId]  = useState(defaultWatershedId ?? '')
   const [startDate,    setStartDate]    = useState('')
@@ -142,7 +148,7 @@ export default function GeoImageGallery({ defaultWatershedId }) {
             <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
             <input
               type="text"
-              placeholder="Search by label or activity…"
+              placeholder={t('searchPlaceholder')}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="w-full bg-gray-900 border border-gray-800 text-white rounded-lg pl-10 pr-4 py-2 text-sm focus:outline-none focus:border-emerald-500 transition-colors"
@@ -156,10 +162,10 @@ export default function GeoImageGallery({ defaultWatershedId }) {
             )}
           >
             <SlidersHorizontal className="w-4 h-4" />
-            Filters
+            {t('btnClearFilters') ? 'Filters' : 'Filters'}
           </button>
           <span className="text-xs text-gray-400 ml-auto bg-gray-900 px-3 py-1.5 rounded-lg border border-gray-800">
-            {totalCount} Total Geo-Images
+            {totalCount} {t('tickerImages')}
           </span>
         </div>
 
@@ -221,18 +227,18 @@ export default function GeoImageGallery({ defaultWatershedId }) {
         </div>
       ) : filtered.length === 0 ? (
         <div className="text-center py-16 bg-gray-900/50 rounded-2xl border border-gray-800">
-          <p className="text-gray-400 text-base">No field images found matching your criteria.</p>
+          <p className="text-gray-400 text-base">{t('noImagesFound')}</p>
           <button
             onClick={() => { setActivityType(''); setWatershedId(''); setSearch(''); setStartDate(''); setEndDate('') }}
             className="mt-3 text-emerald-400 hover:text-emerald-300 text-sm font-medium"
           >
-            Clear all filters
+            {t('btnClearFilters')}
           </button>
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {filtered.map((image) => (
-            <ImageCard key={image.id} image={image} onClick={setSelected} />
+            <ImageCard key={image.id} image={image} onClick={setSelected} t={t} />
           ))}
         </div>
       )}

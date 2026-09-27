@@ -244,9 +244,9 @@ export default function WatershedMap({
           onChange={(e) => setSelectedWsKey(e.target.value)}
           className="bg-gray-800 text-white text-xs rounded-lg px-2.5 py-1.5 border border-gray-700 focus:outline-none focus:border-emerald-500 font-medium"
         >
-          <option value="bhor">Maharashtra: Bhor Micro-Watershed (Pune)</option>
-          <option value="alwar">Rajasthan: Alwar Rainfed Catchment</option>
-          <option value="tumkur">Karnataka: Tumkur Semi-Arid Basin</option>
+          <option value="bhor">{t('wsBhor')}</option>
+          <option value="alwar">{t('wsAlwar')}</option>
+          <option value="tumkur">{t('wsTumkur')}</option>
         </select>
         <span className="text-[10px] text-gray-400 bg-gray-950 px-2 py-1 rounded border border-gray-800 font-mono hidden sm:inline">
           {currentWs.area_ha} ha

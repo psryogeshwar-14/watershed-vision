@@ -107,9 +107,9 @@ export default function Reports() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 print:p-0 print:m-0 print:max-w-none">
       {/* ── Screen-only Header Controls ── */}
-      <div className="no-print mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-gray-800 pb-6">
+      <div className="no-print print:hidden mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-gray-800 pb-6">
         <div>
           <div className="flex items-center gap-2">
             <span className="px-2.5 py-0.5 rounded-full bg-emerald-950 text-emerald-300 border border-emerald-800 text-xs font-semibold">
@@ -134,7 +134,7 @@ export default function Reports() {
             className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gray-800 hover:bg-gray-700 text-gray-200 border border-gray-700 text-xs sm:text-sm font-medium transition-all shadow-sm"
           >
             <Printer className="w-4 h-4 text-gray-400" />
-            {isHi ? 'प्रिंट / पीडीएफ' : 'Print / Quick PDF'}
+            {t('btnPrintQuick')}
           </button>
 
           <button
@@ -144,21 +144,21 @@ export default function Reports() {
           >
             {generating ? (
               <>
-                <span className="animate-spin text-sm">⟳</span> {isHi ? 'जनरेट हो रहा है...' : 'Compiling Dossier...'}
+                <span className="animate-spin text-sm">⟳</span> {t('btnCompiling')}
               </>
             ) : (
               <>
                 <Download className="w-4 h-4" />
-                {isHi ? 'आधिकारिक डोजियर एक्सपोर्ट' : 'Export Statutory Dossier'}
+                {t('btnExportPdf')}
               </>
             )}
           </button>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 print:block print:w-full">
         {/* ── Left Sidebar Controls (Hidden when printing) ── */}
-        <div className="no-print lg:col-span-1 space-y-6">
+        <div className="no-print print:hidden lg:col-span-1 space-y-6">
           <div className="bg-gray-900 border border-gray-800 rounded-2xl p-5 shadow-lg space-y-5">
             <h2 className="text-white font-semibold text-sm uppercase tracking-wider flex items-center gap-2">
               <Building className="w-4 h-4 text-emerald-400" />
@@ -227,10 +227,10 @@ export default function Reports() {
         </div>
 
         {/* ── Right Column: Official Printable Statutory Dossier ── */}
-        <div className="lg:col-span-3">
+        <div className="lg:col-span-3 print:col-span-4 print:w-full print:block print:p-0 print:m-0">
           <div 
             id="dossier-printable"
-            className="bg-white text-gray-900 rounded-2xl shadow-2xl p-6 sm:p-10 border border-gray-200 print:border-none print:shadow-none print:p-0 print:m-0"
+            className="bg-white text-gray-900 rounded-2xl shadow-2xl p-6 sm:p-10 border border-gray-200 print:border-none print:shadow-none print:p-0 print:m-0 print:w-full"
           >
             {/* ── Official Government of India Header ── */}
             <div className="border-b-2 border-emerald-900 pb-5 mb-6 text-center relative">

@@ -5,6 +5,7 @@ import NDVIChart from './NDVIChart.jsx'
 import WatershedHealthGauge from './WatershedHealthGauge.jsx'
 import { useWatershedStats, useWatershedHealth, useGeoImages } from '../../hooks/useWatershedData.js'
 import { useSatelliteNDVI } from '../../hooks/useSatelliteData.js'
+import { useLanguage } from '../../services/i18n.js'
 
 const ACTIVITY_COLORS = {
   afforestation: '#16a34a',
@@ -41,7 +42,7 @@ function StatCard({ icon: Icon, label, value, change, unit = '', iconBg = 'bg-em
   )
 }
 
-function ActivityBreakdownChart({ images }) {
+function ActivityBreakdownChart({ images, t }) {
   const counts = {}
   images.forEach((img) => {
     const key = img.activity_type || 'other'
@@ -54,12 +55,13 @@ function ActivityBreakdownChart({ images }) {
     <div className="bg-gray-900/90 rounded-xl p-5 border border-gray-800 shadow-sm">
       <h3 className="text-sm font-semibold text-white uppercase tracking-wider mb-4 flex items-center gap-2">
         <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
-        Activity Breakdown
+        {t('activityBreakdown')}
       </h3>
       <div className="space-y-3">
         {entries.map(([key, count]) => {
           const pct = total > 0 ? Math.round((count / total) * 100) : 0
-          const label = key.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase())
+          const translated = t(key)
+          const label = translated !== key ? translated : key.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase())
           return (
             <div key={key}>
               <div className="flex justify-between text-xs mb-1">
@@ -80,12 +82,12 @@ function ActivityBreakdownChart({ images }) {
   )
 }
 
-function RecentImages({ images }) {
+function RecentImages({ images, t }) {
   return (
     <div className="bg-gray-900/90 rounded-xl p-5 border border-gray-800 shadow-sm">
       <h3 className="text-sm font-semibold text-white uppercase tracking-wider mb-4 flex items-center gap-2">
         <span className="w-2 h-2 rounded-full bg-blue-400"></span>
-        Recent Field Photos
+        {t('recentPhotos')}
       </h3>
       <div className="space-y-3">
         {images.slice(0, 5).map((img) => (
@@ -115,6 +117,7 @@ function RecentImages({ images }) {
 }
 
 export default function AnalyticsDashboard({ watershedId, compact = false }) {
+  const { t } = useLanguage()
   const { data: stats }  = useWatershedStats(watershedId)
   const { data: health } = useWatershedHealth(watershedId)
   const { data: imgData } = useGeoImages({ watershedId })
@@ -128,7 +131,7 @@ export default function AnalyticsDashboard({ watershedId, compact = false }) {
       <div className="grid grid-cols-2 gap-3">
         <StatCard
           icon={Camera}
-          label="Total Images"
+          label={t('statTotalImages')}
           value={(stats?.total_images ?? 847).toLocaleString()}
           change={12}
           iconBg="bg-purple-950/70"
@@ -136,7 +139,7 @@ export default function AnalyticsDashboard({ watershedId, compact = false }) {
         />
         <StatCard
           icon={MapPin}
-          label="Area Covered"
+          label={t('statArea')}
           value={(stats?.area_covered_ha ?? 48200).toLocaleString()}
           unit="ha"
           iconBg="bg-amber-950/70"
@@ -144,7 +147,7 @@ export default function AnalyticsDashboard({ watershedId, compact = false }) {
         />
         <StatCard
           icon={Activity}
-          label="NDVI Health"
+          label={t('statNdvi')}
           value={stats?.ndvi_current?.toFixed(2) ?? '0.61'}
           change={stats?.ndvi_change ?? +0.04}
           iconBg="bg-emerald-950/70"
@@ -152,7 +155,7 @@ export default function AnalyticsDashboard({ watershedId, compact = false }) {
         />
         <StatCard
           icon={Droplets}
-          label="Water Bodies"
+          label={t('statWaterBodies')}
           value={stats?.water_bodies_count ?? 23}
           change={3}
           iconBg="bg-blue-950/70"
@@ -164,26 +167,26 @@ export default function AnalyticsDashboard({ watershedId, compact = false }) {
       {!compact && (
         <div className="bg-gray-900/90 border border-gray-800 rounded-xl p-4">
           <h3 className="text-xs font-semibold text-gray-300 uppercase tracking-wider mb-2">
-            NDVI Vegetation Trend
+            {t('chartNdviTitle')}
           </h3>
           <NDVIChart series={ndviSeries} height={180} />
         </div>
       )}
 
       {/* ── Activity Breakdown & Health Gauge ── */}
-      <ActivityBreakdownChart images={images} />
+      <ActivityBreakdownChart images={images} t={t} />
       
       <div className="bg-gray-900/90 rounded-xl p-5 border border-gray-800 flex flex-col items-center justify-center">
         <h3 className="text-sm font-semibold text-white uppercase tracking-wider mb-4 self-start flex items-center gap-2">
           <span className="w-2 h-2 rounded-full bg-teal-400"></span>
-          Watershed Health Index
+          {t('healthGaugeTitle')}
         </h3>
         <WatershedHealthGauge score={health?.score ?? 72} />
         <div className="mt-4 grid grid-cols-3 gap-2 w-full text-center text-xs">
           {[
-            { label: 'Vegetation', score: health?.ndvi_score ?? 68 },
-            { label: 'Water',      score: health?.water_score ?? 78 },
-            { label: 'Interventions', score: health?.intervention_score ?? 70 },
+            { label: t('metricVegetation'), score: health?.ndvi_score ?? 68 },
+            { label: t('metricWater'),      score: health?.water_score ?? 78 },
+            { label: t('metricInterventions'), score: health?.intervention_score ?? 70 },
           ].map(({ label, score }) => (
             <div key={label} className="bg-gray-800/80 border border-gray-700/50 rounded-lg py-2">
               <p className="font-bold text-white text-sm">{score}</p>
@@ -193,7 +196,7 @@ export default function AnalyticsDashboard({ watershedId, compact = false }) {
         </div>
       </div>
 
-      <RecentImages images={images} />
+      <RecentImages images={images} t={t} />
     </div>
   )
 }

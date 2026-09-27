@@ -81,50 +81,121 @@ const THEMATIC_MAPS = [
 ]
 
 export default function ThematicMaps() {
+  const { t } = useLanguage()
   const [activeModalMap, setActiveModalMap] = useState(null)
   const [selectedPeriod, setSelectedPeriod] = useState('Jun–Sep 2024')
-  const [selectedWatershed, setSelectedWatershed] = useState('Bhor Watershed — Maharashtra')
+  const [selectedWatershed, setSelectedWatershed] = useState('bhor')
 
   const handleDownload = (format, mapTitle) => {
     toast.success(`Preparing ${format} download for ${mapTitle}...`)
   }
 
+  const thematicCards = [
+    {
+      id: 'lulc',
+      layerType: 'lulc',
+      title: t('mapLulcTitle'),
+      description: t('mapLulcDesc'),
+      icon: Layers,
+      badge: 'Sentinel-2',
+      badgeColor: 'bg-emerald-700',
+      stats: '6 classes · 30m resolution',
+      gradient: 'linear-gradient(135deg, #064e3b, #065f46, #047857)',
+    },
+    {
+      id: 'ndvi',
+      layerType: 'ndvi',
+      title: t('mapNdviTitle'),
+      description: t('mapNdviDesc'),
+      icon: Activity,
+      badge: 'Sentinel-2 B8/B4',
+      badgeColor: 'bg-lime-700',
+      stats: 'Range: -1 to +1 · Monthly composite',
+      gradient: 'linear-gradient(135deg, #365314, #4d7c0f, #84cc16)',
+    },
+    {
+      id: 'water',
+      layerType: 'ndwi',
+      title: t('mapWaterTitle'),
+      description: t('mapWaterDesc'),
+      icon: Droplets,
+      badge: 'NDWI · Sentinel-2',
+      badgeColor: 'bg-blue-700',
+      stats: 'Water area estimate in ha',
+      gradient: 'linear-gradient(135deg, #0c4a6e, #0369a1, #0ea5e9)',
+    },
+    {
+      id: 'drainage',
+      layerType: 'drainage',
+      title: t('mapDrainageTitle'),
+      description: t('mapDrainageDesc'),
+      icon: GitBranch,
+      badge: 'SRTM DEM · 30m',
+      badgeColor: 'bg-sky-700',
+      stats: 'Stream order 1–5 mapped',
+      gradient: 'linear-gradient(135deg, #1e3a5f, #1e40af, #3b82f6)',
+    },
+    {
+      id: 'soil-moisture',
+      layerType: 'ndwi',
+      title: t('mapMoistureTitle'),
+      description: t('mapMoistureDesc'),
+      icon: Thermometer,
+      badge: 'MNDWI · Sentinel-2',
+      badgeColor: 'bg-amber-700',
+      stats: 'Seasonal moisture tracking',
+      gradient: 'linear-gradient(135deg, #78350f, #b45309, #d97706)',
+    },
+    {
+      id: 'intervention-heatmap',
+      layerType: 'heatmap',
+      title: t('mapHeatmapTitle'),
+      description: t('mapHeatmapDesc'),
+      icon: Map,
+      badge: 'Geo-Images · KDE',
+      badgeColor: 'bg-red-700',
+      stats: 'Based on uploaded field images',
+      gradient: 'linear-gradient(135deg, #7f1d1d, #b91c1c, #ef4444)',
+    },
+  ]
+
+  const wsDisplayName = selectedWatershed === 'alwar' ? t('wsAlwar') : selectedWatershed === 'tumkur' ? t('wsTumkur') : t('wsBhor')
+
   return (
     <div className="max-w-screen-2xl mx-auto px-6 py-8">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-white mb-2">Thematic Maps</h1>
+        <h1 className="text-3xl font-bold text-white mb-2">{t('thematicTitle')}</h1>
         <p className="text-gray-400 text-sm max-w-2xl">
-          Geospatial analysis products derived from Sentinel-2 satellite imagery and field data.
-          These maps support evidence-based watershed planning and monitoring aligned with SRISHTI-DRISHTI platform objectives.
+          {t('thematicSub')}
         </p>
       </div>
 
       {/* Date period selector */}
       <div className="flex items-center gap-4 mb-8 flex-wrap">
         <div className="flex items-center gap-2">
-          <label className="text-gray-400 text-xs uppercase tracking-wider font-medium">Analysis Period:</label>
+          <label className="text-gray-400 text-xs uppercase tracking-wider font-medium">{t('analysisPeriod')}</label>
           <select
             value={selectedPeriod}
             onChange={(e) => setSelectedPeriod(e.target.value)}
             className="bg-gray-900 text-white border border-gray-800 rounded-lg px-3 py-1.5 text-sm focus:border-emerald-500 outline-none"
           >
-            <option>Jun–Sep 2024 (Kharif / Monsoon)</option>
-            <option>Oct–Jan 2024 (Rabi / Post-Monsoon)</option>
-            <option>Feb–May 2024 (Summer / Pre-Monsoon)</option>
-            <option>Full Year 2024</option>
+            <option value="kharif">{t('periodKharif')}</option>
+            <option value="rabi">{t('periodRabi')}</option>
+            <option value="summer">{t('periodSummer')}</option>
+            <option value="fullyear">{t('periodFullYear')}</option>
           </select>
         </div>
         <div className="flex items-center gap-2">
-          <label className="text-gray-400 text-xs uppercase tracking-wider font-medium">Target Watershed:</label>
+          <label className="text-gray-400 text-xs uppercase tracking-wider font-medium">{t('targetWatershed')}</label>
           <select
             value={selectedWatershed}
             onChange={(e) => setSelectedWatershed(e.target.value)}
             className="bg-gray-900 text-white border border-gray-800 rounded-lg px-3 py-1.5 text-sm focus:border-emerald-500 outline-none"
           >
-            <option>Bhor Watershed — Maharashtra</option>
-            <option>Alwar Watershed — Rajasthan</option>
-            <option>Tumkur Watershed — Karnataka</option>
+            <option value="bhor">{t('wsBhor')}</option>
+            <option value="alwar">{t('wsAlwar')}</option>
+            <option value="tumkur">{t('wsTumkur')}</option>
           </select>
         </div>
       </div>
@@ -132,7 +203,7 @@ export default function ThematicMaps() {
       {/* Interactive Before & After Satellite Change Detection Section */}
       <div className="mb-10">
         <BeforeAfterSwipeMap
-          watershedName={selectedWatershed}
+          watershedName={wsDisplayName}
           beforeYear="May 2021 (Pre-Intervention Baseline)"
           afterYear="Oct 2024 (Post-Monsoon Impact)"
           ndviGain="+0.21"
@@ -143,17 +214,17 @@ export default function ThematicMaps() {
 
       <div className="mb-6 flex items-center justify-between">
         <div>
-          <h2 className="text-xl font-bold text-white tracking-tight">Available Thematic Products</h2>
-          <p className="text-xs text-gray-400 mt-0.5">Sentinel-2 MSI & SRTM DEM analytical layers ready for GIS export</p>
+          <h2 className="text-xl font-bold text-white tracking-tight">{t('availableThematic')}</h2>
+          <p className="text-xs text-gray-400 mt-0.5">{t('availableThematicSub')}</p>
         </div>
         <span className="text-xs text-emerald-400 bg-emerald-950/70 border border-emerald-800 px-3 py-1 rounded-full font-mono">
-          6 Active Products
+          6 {t('activeProducts')}
         </span>
       </div>
 
       {/* Map cards grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-        {THEMATIC_MAPS.map((map) => {
+        {thematicCards.map((map) => {
           const Icon = map.icon
           return (
             <div
@@ -204,7 +275,7 @@ export default function ThematicMaps() {
                     className="flex-1 flex items-center justify-center gap-1.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs py-2 rounded-lg transition-colors font-medium shadow-sm"
                   >
                     <Eye className="w-3.5 h-3.5" />
-                    View Map
+                    {t('viewOnMap')}
                   </button>
                   <button
                     onClick={() => handleDownload('PNG', map.title)}

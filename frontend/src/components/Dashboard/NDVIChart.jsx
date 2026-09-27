@@ -14,6 +14,7 @@ import {
 } from 'recharts'
 import { format, parseISO } from 'date-fns'
 import { subMonths } from 'date-fns'
+import { useLanguage } from '../../services/i18n.js'
 
 // Generate mock series if not provided
 function generateMockSeries(months = 18) {
@@ -33,7 +34,7 @@ function generateMockSeries(months = 18) {
 
 const MOCK_SERIES = generateMockSeries()
 
-function CustomTooltip({ active, payload, label }) {
+function CustomTooltip({ active, payload, label, t }) {
   if (!active || !payload?.length) return null
   const d = payload[0]?.payload
   return (
@@ -41,13 +42,14 @@ function CustomTooltip({ active, payload, label }) {
       <p className="font-semibold mb-1">
         {label ? format(parseISO(label), 'dd MMM yyyy') : ''}
       </p>
-      <p className="text-green-400">Mean NDVI: <strong>{d?.ndvi_mean?.toFixed(3)}</strong></p>
-      <p className="text-gray-400">Range: {d?.ndvi_min?.toFixed(3)} – {d?.ndvi_max?.toFixed(3)}</p>
+      <p className="text-green-400">{t('chartMeanNdvi')}: <strong>{d?.ndvi_mean?.toFixed(3)}</strong></p>
+      <p className="text-gray-400">{t('chartRange')}: {d?.ndvi_min?.toFixed(3)} – {d?.ndvi_max?.toFixed(3)}</p>
     </div>
   )
 }
 
 export default function NDVIChart({ series }) {
+  const { t } = useLanguage()
   const data = Array.isArray(series) && series.length > 0 ? series : MOCK_SERIES
 
   const formatted = data.map((d) => ({
@@ -60,15 +62,15 @@ export default function NDVIChart({ series }) {
     <div className="bg-white rounded-xl p-5 shadow-card border border-gray-100 animate-slide-up">
       <div className="flex items-center justify-between mb-4">
         <div>
-          <h3 className="section-title">NDVI Trend</h3>
-          <p className="text-xs text-gray-500 mt-0.5">Satellite-derived vegetation health over time</p>
+          <h3 className="section-title">{t('chartNdviTitle')}</h3>
+          <p className="text-xs text-gray-500 mt-0.5">{t('chartNdviSubtitle')}</p>
         </div>
         <div className="flex items-center gap-2 text-xs text-gray-500">
           <span className="flex items-center gap-1">
-            <span className="w-2 h-2 rounded-full bg-green-500" />Mean NDVI
+            <span className="w-2 h-2 rounded-full bg-green-500" />{t('chartMeanNdvi')}
           </span>
           <span className="flex items-center gap-1">
-            <span className="w-2 h-2 rounded-full bg-green-200" />Min–Max Range
+            <span className="w-2 h-2 rounded-full bg-green-200" />{t('chartRange')}
           </span>
         </div>
       </div>
@@ -96,7 +98,7 @@ export default function NDVIChart({ series }) {
             tickLine={false}
             tickCount={6}
           />
-          <Tooltip content={<CustomTooltip />} />
+          <Tooltip content={<CustomTooltip t={t} />} />
 
           {/* Min-Max shaded area */}
           <Area
@@ -117,7 +119,7 @@ export default function NDVIChart({ series }) {
             y={0.3}
             stroke="#f59e0b"
             strokeDasharray="5 5"
-            label={{ value: 'Healthy (0.3)', position: 'insideTopRight', fontSize: 10, fill: '#f59e0b' }}
+            label={{ value: t('chartHealthyThreshold'), position: 'insideTopRight', fontSize: 10, fill: '#f59e0b' }}
           />
 
           {/* Mean NDVI line */}
@@ -128,7 +130,7 @@ export default function NDVIChart({ series }) {
             strokeWidth={2}
             dot={false}
             activeDot={{ r: 4, stroke: '#16a34a', strokeWidth: 2, fill: '#fff' }}
-            name="Mean NDVI"
+            name={t('chartMeanNdvi')}
           />
         </ComposedChart>
       </ResponsiveContainer>

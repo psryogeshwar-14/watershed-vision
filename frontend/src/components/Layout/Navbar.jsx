@@ -25,7 +25,7 @@ export default function Navbar() {
   ]
 
   return (
-    <nav className="bg-gray-900 border-b border-gray-800 sticky top-0 z-50 shadow-md">
+    <nav className="bg-gray-900 border-b border-gray-800 sticky top-0 z-50 shadow-md print:hidden">
       <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}

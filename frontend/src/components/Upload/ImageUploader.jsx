@@ -6,6 +6,7 @@ import toast from 'react-hot-toast'
 import { uploadGeoImage } from '../../services/api.js'
 import { useWatersheds } from '../../hooks/useWatershedData.js'
 import GeofenceBadge from './GeofenceBadge.jsx'
+import { useLanguage } from '../../services/i18n.js'
 
 const ACTIVITY_TYPES = [
   { value: 'afforestation', label: 'Afforestation' },
@@ -102,6 +103,7 @@ export default function ImageUploader({ defaultWatershedId, onSuccess }) {
     }
   }
 
+  const { t } = useLanguage()
   const selectedWsName = watersheds.find(w => w.id === watershedId)?.name || 'Selected Watershed'
 
   return (
@@ -109,10 +111,10 @@ export default function ImageUploader({ defaultWatershedId, onSuccess }) {
       <div className="p-5 border-b border-gray-100 bg-gradient-to-r from-primary-50 to-secondary-50">
         <h2 className="text-lg font-bold text-gray-900 flex items-center gap-2">
           <Camera className="w-5 h-5 text-primary-600" />
-          Upload Field Images
+          {t('uploadTitle')}
         </h2>
         <p className="text-sm text-gray-500 mt-0.5">
-          JPEG/PNG/HEIC up to 20MB. GPS metadata extracted automatically.
+          {t('uploadSub')}
         </p>
       </div>
 
@@ -130,12 +132,12 @@ export default function ImageUploader({ defaultWatershedId, onSuccess }) {
           <input {...getInputProps()} />
           <Upload className={clsx('w-10 h-10 mx-auto mb-3', isDragActive ? 'text-primary-600' : 'text-gray-300')} />
           {isDragActive ? (
-            <p className="text-primary-700 font-semibold">Drop images here…</p>
+            <p className="text-primary-700 font-semibold">{t('dragDropText')}…</p>
           ) : (
             <>
-              <p className="text-gray-700 font-semibold">Drag & drop images here</p>
-              <p className="text-sm text-gray-400 mt-1">or <span className="text-primary-600 font-medium">click to browse</span></p>
-              <p className="text-xs text-gray-400 mt-2">Supports JPEG, PNG, HEIC, WebP · Max 20MB per file</p>
+              <p className="text-gray-700 font-semibold">{t('dragDropText')}</p>
+              <p className="text-sm text-gray-400 mt-1"><span className="text-primary-600 font-medium">{t('clickBrowse')}</span></p>
+              <p className="text-xs text-gray-400 mt-2">JPEG, PNG, HEIC, WebP · Max 20MB</p>
             </>
           )}
         </div>
@@ -152,28 +154,32 @@ export default function ImageUploader({ defaultWatershedId, onSuccess }) {
         {/* ── Form Fields ── */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label className="form-label">Watershed *</label>
+            <label className="form-label">{t('selectWatershedLabel')}</label>
             <select
               value={watershedId}
               onChange={(e) => setWatershedId(e.target.value)}
               className="form-select"
             >
-              <option value="">Select watershed…</option>
+              <option value="">{t('wsSelect')}</option>
               {watersheds.map((w) => (
                 <option key={w.id} value={w.id}>{w.name} — {w.state}</option>
               ))}
             </select>
           </div>
           <div>
-            <label className="form-label">Activity Type *</label>
+            <label className="form-label">{t('selectActivityLabel')}</label>
             <select
               value={activityType}
               onChange={(e) => setActivityType(e.target.value)}
               className="form-select"
             >
-              {ACTIVITY_TYPES.map((a) => (
-                <option key={a.value} value={a.value}>{a.label}</option>
-              ))}
+              {ACTIVITY_TYPES.map((a) => {
+                const translated = t(a.value)
+                const label = (translated && translated !== a.value) ? translated : a.label
+                return (
+                  <option key={a.value} value={a.value}>{label}</option>
+                )
+              })}
             </select>
           </div>
 
@@ -181,7 +187,7 @@ export default function ImageUploader({ defaultWatershedId, onSuccess }) {
           <div>
             <label className="form-label flex items-center gap-1.5">
               <MapPin className="w-3.5 h-3.5 text-primary-600" />
-              Latitude (auto from EXIF)
+              {t('latitudeLabel')}
             </label>
             <input
               type="number"
@@ -195,7 +201,7 @@ export default function ImageUploader({ defaultWatershedId, onSuccess }) {
           <div>
             <label className="form-label flex items-center gap-1.5">
               <MapPin className="w-3.5 h-3.5 text-primary-600" />
-              Longitude (auto from EXIF)
+              {t('longitudeLabel')}
             </label>
             <input
               type="number"
@@ -212,7 +218,7 @@ export default function ImageUploader({ defaultWatershedId, onSuccess }) {
         {uploading && (
           <div className="animate-fade-in">
             <div className="flex justify-between text-xs text-gray-500 mb-1">
-              <span>Uploading & analyzing…</span>
+              <span>{t('btnUploading')}</span>
               <span>{progress}%</span>
             </div>
             <div className="w-full bg-gray-100 rounded-full h-2">
@@ -264,9 +270,9 @@ export default function ImageUploader({ defaultWatershedId, onSuccess }) {
           )}
         >
           {uploading ? (
-            <><Loader2 className="w-4 h-4 animate-spin" /> Analyzing…</>
+            <><Loader2 className="w-4 h-4 animate-spin" /> {t('btnUploading')}</>
           ) : (
-            <><Upload className="w-4 h-4" /> Upload {files.length > 0 ? `${files.length} Image${files.length > 1 ? 's' : ''}` : 'Images'}</>
+            <><Upload className="w-4 h-4" /> {t('btnSubmitUpload')}</>
           )}
         </button>
       </div>
