@@ -2,8 +2,7 @@ import { useState } from 'react'
 import { format } from 'date-fns'
 import { SlidersHorizontal, ChevronLeft, ChevronRight, Search, MapPin, Calendar, Sparkles } from 'lucide-react'
 import clsx from 'clsx'
-import { useGeoImages } from '../../hooks/useWatershedData.js'
-import { useWatersheds } from '../../hooks/useWatershedData.js'
+import { useGeoImages, useWatersheds, MOCK_GEO_IMAGES } from '../../hooks/useWatershedData.js'
 import ImageDetailModal from './ImageDetailModal.jsx'
 
 const ACTIVITY_TYPES = [
@@ -59,6 +58,10 @@ function ImageCard({ image, onClick }) {
           src={image.thumbnail ?? image.image}
           alt={image.ai_label}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+          onError={(e) => {
+            e.target.onerror = null
+            e.target.src = 'https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=600&auto=format&fit=crop&q=80'
+          }}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-gray-950/80 via-transparent to-black/30" />
         <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full border backdrop-blur-md absolute top-2.5 left-2.5 shadow-sm ${badgeCls}`}>
@@ -112,8 +115,13 @@ export default function GeoImageGallery({ defaultWatershedId }) {
     page,
   })
 
-  const allImages   = data?.results ?? []
-  const totalCount  = data?.count ?? 0
+  const allImages = (data?.results && data.results.length > 0)
+    ? data.results
+    : (data?.items && data.items.length > 0)
+      ? data.items
+      : MOCK_GEO_IMAGES.results
+
+  const totalCount  = data?.count ?? data?.total ?? allImages.length
   const pageSize    = 12
   const totalPages  = Math.max(1, Math.ceil(totalCount / pageSize))
 

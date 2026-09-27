@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Marker, Popup, useMap } from 'react-leaflet'
 import L from 'leaflet'
 import { format } from 'date-fns'
-import { useGeoImages } from '../../hooks/useWatershedData.js'
+import { useGeoImages, MOCK_GEO_IMAGES } from '../../hooks/useWatershedData.js'
 import ImageDetailModal from '../ImageGallery/ImageDetailModal.jsx'
 
 // ── Activity type configuration ────────────────────────────────
@@ -55,7 +55,11 @@ function ConfidenceBar({ value }) {
 export default function GeoImageLayer({ watershedId, onImageClick }) {
   const [selected, setSelected] = useState(null)
   const { data } = useGeoImages({ watershedId })
-  const images = data?.results ?? []
+  const images = (data?.results && data.results.length > 0)
+    ? data.results
+    : (data?.items && data.items.length > 0)
+      ? data.items
+      : MOCK_GEO_IMAGES.results
 
   const handleClick = (img) => {
     setSelected(img)
@@ -83,6 +87,10 @@ export default function GeoImageLayer({ watershedId, onImageClick }) {
                     src={img.thumbnail ?? img.image}
                     alt={img.ai_label}
                     className="w-full h-full object-cover"
+                    onError={(e) => {
+                      e.target.onerror = null
+                      e.target.src = 'https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=600&auto=format&fit=crop&q=80'
+                    }}
                   />
                   <span className={`badge ${cfg.badgeClass} absolute top-2 left-2`}>
                     {cfg.label}

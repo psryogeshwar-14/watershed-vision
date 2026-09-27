@@ -10,9 +10,17 @@ const api = axios.create({
 })
 
 api.interceptors.response.use(
-  (res) => res.data,
+  (res) => {
+    // If response is HTML document string (e.g. Vercel SPA rewrite fallback for /api/*), treat as rejected
+    if (typeof res.data === 'string' && (res.data.includes('<!DOCTYPE') || res.data.includes('<html') || res.data.includes('<head>'))) {
+      const err = new Error('Endpoint returned HTML document instead of JSON (backend offline or SPA rewrite).')
+      err.response = { status: 404, data: null }
+      return Promise.reject(err)
+    }
+    return res.data
+  },
   (err) => {
-    console.error('[API Error]', err?.response?.data || err.message)
+    console.warn('[API Notice]', err?.message || 'Network request failed, activating resilient client fallback.')
     return Promise.reject(err)
   }
 )
