@@ -8,6 +8,16 @@
 
 ---
 
+### 🔗 Quick Links & Hackathon Deliverables
+
+- 🌐 **Live Web Application (Vercel)**: [https://watershed-vision.vercel.app](https://watershed-vision.vercel.app/)
+- 💻 **GitHub Repository**: [https://github.com/psryogeshwar-14/watershed-vision](https://github.com/psryogeshwar-14/watershed-vision)
+- 📊 **Official SIH Presentation (PDF - 4.18 MB)**: [`WatershedVision_SIH_Presentation.pdf`](./WatershedVision_SIH_Presentation.pdf)
+- 📽️ **Official SIH Presentation (Editable PPTX)**: [`WatershedVision_SIH_Presentation.pptx`](./WatershedVision_SIH_Presentation.pptx)
+- 🎙️ **Speaker Pitch Notes & Evaluation Script**: [`SIH_PRESENTATION_SPEAKER_NOTES.md`](./SIH_PRESENTATION_SPEAKER_NOTES.md)
+
+---
+
 ## 📑 Executive Summary
 
 Watershed development is essential for soil moisture conservation, groundwater recharge, and drought mitigation across rural and semi-arid India. Under programs such as **WDC-PMKSY** (Watershed Development Component of Pradhan Mantri Krishi Sinchayee Yojana), thousands of field photographs are collected using the mobile app **DRISHTI** and stored in the **SRISHTI** portal. 
@@ -69,28 +79,38 @@ However, existing monitoring approaches suffer from major limitations:
 
 ---
 
-## 🎨 UI/UX Design (Figma-Grade Geospatial Command Center)
+## 🎨 UI/UX Design & High-Impact Features
 
-The frontend is built using a dark, high-contrast command center aesthetic tailored for GIS professionals:
+The frontend is built using a dark, high-contrast command center aesthetic tailored for GIS professionals and government auditors:
 - **Palette**: Deep Charcoal (`#030712`, `#111827`) with Emerald Green (`#10b981`) and Water Blue (`#0ea5e9`) accents.
+- **🇮🇳 Dual-Language Localization (English & Hindi `हिंदी`)**:
+  - Full toggle in top navigation translating navigation, metrics, sidebar controls, filter chips, modal inspectors, and audit tables.
+  - Zero-drop layout stability with localized terminology aligned with Indian rural administration standards.
 - **Interactive Leaflet Map**:
   - Multi-basemap switcher (OpenStreetMap, Esri High-Res Satellite, CartoDB Dark).
   - PostGIS boundary polygons with live tooltip highlighting.
   - Geo-image markers dynamically colored by activity type (Afforestation, Water Body, Check Dam, Contour Bund, etc.).
   - Interactive layer toggle (NDVI raster, NDWI water bodies, drainage polylines, image markers).
+- **🔀 Before/After Temporal Swipe Map**:
+  - Split-pane interactive comparison slider on `/watershed/:id` allowing side-by-side inspection of pre-intervention baseline vs post-monsoon satellite imagery.
 - **Executive Analytics Dashboard**:
   - Real-time stat cards with percentage delta indicators.
   - Composite **Watershed Health Index** gauge (0–100) combining NDVI, water extent, and survey density.
-  - Recharts temporal NDVI curves with shaded min/max confidence bands.
+  - Recharts temporal NDVI curves with shaded min/max confidence bands and outline-contained margins.
   - Activity breakdown progress bars with color-coded taxonomy.
-- **Field Image Gallery**:
+- **Field Image Gallery & Anti-Spoofing Inspector**:
   - Instant client-side search across AI labels, coordinates, and survey notes.
   - Multi-parameter filter panel (Watershed, Activity Type, Date range).
-  - High-tech image inspection modal displaying camera device, altitude (m ASL), GPS coordinates, AI confidence bar, and expert recommendations.
+  - High-tech inspection modal with camera device, altitude (m ASL), GPS coordinates, AI confidence score, and structural recommendations.
+  - **Spatial Anti-Spoofing Verification**: Cross-checks EXIF timestamp consistency, GPS cluster bounds, and elevation against SRTM DEM.
 - **Thematic Maps Hub**:
   - 6 analysis cards (LULC, NDVI, Water Body, Drainage, Soil Moisture, Heatmap).
   - Modal with live interactive map inspection.
   - Instant export options (PNG & GeoTIFF).
+- **🏛️ Statutory MoRD Audit Dossier & Isolated Print-to-PDF**:
+  - Official Government of India audit report layout at `/reports`.
+  - Clean `@media print` CSS isolating strictly the audit dossier and stripping away headers, sidebars, buttons, and navigation chrome.
+  - Resilient date rendering engine guarded by React ErrorBoundary.
 
 ---
 
