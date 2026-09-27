@@ -12,6 +12,7 @@ import {
 } from 'lucide-react'
 import clsx from 'clsx'
 import { useWatersheds, useWatershedStats } from '../../hooks/useWatershedData.js'
+import { useLanguage } from '../../services/i18n.js'
 
 const LAYER_OPTIONS = [
   { key: 'ndvi',       label: 'NDVI Layer',       color: 'bg-green-500',  icon: Layers },
@@ -21,12 +22,21 @@ const LAYER_OPTIONS = [
 ]
 
 export default function Sidebar({ activeLayers, onLayerToggle, selectedWatershed, onWatershedChange }) {
+  const { t, lang } = useLanguage()
+  const isHi = lang === 'hi'
   const [collapsed, setCollapsed] = useState(false)
   const [startDate, setStartDate] = useState('2024-01-01')
   const [endDate, setEndDate]     = useState(new Date().toISOString().slice(0, 10))
 
   const { data: watersheds = [] } = useWatersheds()
   const { data: stats } = useWatershedStats(selectedWatershed)
+
+  const layerOptions = [
+    { key: 'ndvi',        label: t('layerNdvi'),     color: 'bg-green-500', icon: Layers },
+    { key: 'ndwi',        label: t('layerNdwi'),     color: 'bg-blue-500',  icon: Layers },
+    { key: 'images',      label: t('layerImages'),   color: 'bg-amber-500', icon: Map },
+    { key: 'waterBodies', label: t('statWaterBodies'), color: 'bg-cyan-500', icon: Droplets },
+  ]
 
   return (
     <aside
@@ -54,14 +64,14 @@ export default function Sidebar({ activeLayers, onLayerToggle, selectedWatershed
             <>
               <label className="form-label flex items-center gap-1.5">
                 <Map className="w-3.5 h-3.5 text-primary-600" />
-                Watershed
+                {t('selectWatershedLabel')}
               </label>
               <select
                 value={selectedWatershed ?? ''}
                 onChange={(e) => onWatershedChange?.(e.target.value || null)}
                 className="form-select mt-1"
               >
-                <option value="">All Watersheds</option>
+                <option value="">{t('wsSelect')}</option>
                 {watersheds.map((w) => (
                   <option key={w.id} value={w.id}>
                     {w.name} — {w.state}
@@ -109,11 +119,11 @@ export default function Sidebar({ activeLayers, onLayerToggle, selectedWatershed
           {!collapsed && (
             <p className="form-label flex items-center gap-1.5 mb-3">
               <Layers className="w-3.5 h-3.5 text-primary-600" />
-              Map Layers
+              {isHi ? 'मानचित्र परतें' : 'Map Layers'}
             </p>
           )}
           <div className="flex flex-col gap-2">
-            {LAYER_OPTIONS.map(({ key, label, color, icon: Icon }) => {
+            {layerOptions.map(({ key, label, color, icon: Icon }) => {
               const isOn = activeLayers?.[key] ?? true
               return (
                 <button
@@ -149,18 +159,18 @@ export default function Sidebar({ activeLayers, onLayerToggle, selectedWatershed
           <div className="p-4 bg-gradient-to-b from-primary-50 to-white">
             <p className="form-label flex items-center gap-1.5 mb-3">
               <BarChart2 className="w-3.5 h-3.5 text-primary-600" />
-              Quick Stats
+              {isHi ? 'त्वरित आंकड़े' : 'Quick Stats'}
             </p>
             <div className="grid grid-cols-2 gap-2">
               {[
-                { label: 'Images',    value: stats.total_images?.toLocaleString()    ?? '—' },
-                { label: 'Area (ha)', value: stats.area_covered_ha?.toLocaleString() ?? '—' },
-                { label: 'NDVI',      value: stats.ndvi_current?.toFixed(2)          ?? '—' },
-                { label: 'Water Bodies', value: stats.water_bodies_count ?? '—' },
+                { label: t('statTotalImages'), value: stats.total_images?.toLocaleString()    ?? '—' },
+                { label: t('statArea'),        value: stats.area_covered_ha?.toLocaleString() ?? '—' },
+                { label: t('statNdvi'),        value: stats.ndvi_current?.toFixed(2)          ?? '—' },
+                { label: t('statWaterBodies'), value: stats.water_bodies_count ?? '—' },
               ].map(({ label, value }) => (
                 <div key={label} className="bg-white rounded-lg p-2 border border-gray-100 text-center">
                   <p className="text-lg font-bold text-primary-700">{value}</p>
-                  <p className="text-[10px] text-gray-500 font-medium">{label}</p>
+                  <p className="text-[10px] text-gray-500 font-medium truncate">{label}</p>
                 </div>
               ))}
             </div>

@@ -18,6 +18,7 @@ import {
 } from 'lucide-react'
 import { format } from 'date-fns'
 import GeofenceBadge from '../Upload/GeofenceBadge.jsx'
+import { useLanguage } from '../../services/i18n.js'
 
 const BADGE_MAP = {
   afforestation: 'bg-emerald-950 text-emerald-300 border-emerald-700/50',
@@ -101,15 +102,19 @@ const RECOMMENDATIONS = {
 
 export default function ImageDetailModal({ image, onClose }) {
   if (!image) return null
+  const { t, lang } = useLanguage()
+  const isHi = lang === 'hi'
+
   const badgeCls = BADGE_MAP[image.activity_type] ?? 'bg-gray-800 text-gray-300 border-gray-700'
-  const activityLabel = ACTIVITY_LABELS[image.activity_type] ?? 'Other'
+  const translated = t(image.activity_type)
+  const activityLabel = (translated && translated !== image.activity_type) ? translated : (ACTIVITY_LABELS[image.activity_type] ?? 'Other')
   const recs = RECOMMENDATIONS[image.activity_type] ?? RECOMMENDATIONS.default
 
   // Civil structural metrics (from AI model or realistic fallbacks)
   const integrityScore = image.structural_integrity_score ?? (image.activity_type === 'soil_erosion' ? 35 : 88)
-  const siltLevel = image.siltation_level ?? (image.activity_type === 'soil_erosion' ? 'Severe (>40%)' : 'Low (<15%)')
+  const siltLevel = image.siltation_level ?? (image.activity_type === 'soil_erosion' ? (isHi ? 'अत्यधिक (>40%)' : 'Severe (>40%)') : (isHi ? 'कम (<15%)' : 'Low (<15%)'))
   const capacityPct = image.capacity_retention_pct ?? (image.activity_type === 'soil_erosion' ? 25 : 92)
-  const urgency = image.maintenance_urgency ?? (image.activity_type === 'soil_erosion' ? 'Immediate Action' : 'Routine')
+  const urgency = image.maintenance_urgency ?? (image.activity_type === 'soil_erosion' ? (isHi ? 'तत्काल कार्रवाई' : 'Immediate Action') : (isHi ? 'नियमित' : 'Routine'))
 
   return (
     <Transition appear show as={Fragment}>
@@ -147,7 +152,7 @@ export default function ImageDetailModal({ image, onClose }) {
                     </span>
                     <span className="text-xs text-gray-500 font-mono">ID: #{image.id}</span>
                     <span className="text-[11px] text-emerald-400 bg-emerald-950/80 border border-emerald-800 px-2 py-0.5 rounded-full hidden sm:inline">
-                      WDC-PMKSY Verified
+                      {isHi ? 'WDC-PMKSY सत्यापित' : 'WDC-PMKSY Verified'}
                     </span>
                   </div>
                   <div className="flex items-center gap-2">
@@ -205,7 +210,7 @@ export default function ImageDetailModal({ image, onClose }) {
                         >
                           <span className="flex items-center gap-1.5">
                             <MapPin className="w-3.5 h-3.5 text-emerald-400" />
-                            Open on OpenStreetMap Satellite Cadastre
+                            {isHi ? 'ओपनस्ट्रीटमैप उपग्रह कैडस्ट्रे पर देखें' : 'Open on OpenStreetMap Satellite Cadastre'}
                           </span>
                           <ChevronRight className="w-3.5 h-3.5" />
                         </a>
@@ -220,23 +225,24 @@ export default function ImageDetailModal({ image, onClose }) {
                       <div className="flex items-center gap-1.5 mb-1">
                         <Sparkles className="w-4 h-4 text-emerald-400" />
                         <span className="text-xs font-bold text-emerald-400 uppercase tracking-wider">
-                          Multimodal Civil AI Inspection
+                          {isHi ? 'मल्टीमॉडल सिविल एआई निरीक्षण' : 'Multimodal Civil AI Inspection'}
                         </span>
                       </div>
                       <h3 className="text-base font-bold text-white">{image.ai_label}</h3>
                       <p className="text-xs text-gray-400 mt-1 leading-relaxed">{image.description}</p>
                     </div>
 
-                    <ConfidenceBar value={image.confidence} label="Classification Confidence" />
+                    <ConfidenceBar value={image.confidence} label={t('aiConfidence')} />
 
                     {/* Structural Health & Siltation Metrics */}
                     <div className="bg-gray-950/70 border border-gray-800 rounded-xl p-3.5 space-y-2.5">
                       <div className="flex items-center justify-between">
                         <span className="text-xs font-bold text-gray-300 uppercase tracking-wider flex items-center gap-1.5">
-                          <Wrench className="w-3.5 h-3.5 text-amber-400" /> Structure Health Diagnosis
+                          <Wrench className="w-3.5 h-3.5 text-amber-400" />
+                          {isHi ? 'संरचनात्मक स्वास्थ्य निदान' : 'Structure Health Diagnosis'}
                         </span>
                         <span className={`text-[10px] font-bold px-2 py-0.5 rounded-md ${
-                          urgency === 'Immediate Action'
+                          urgency.includes('Action') || urgency.includes('कार्रवाई')
                             ? 'bg-rose-950 text-rose-300 border border-rose-800'
                             : 'bg-emerald-950 text-emerald-300 border border-emerald-800'
                         }`}>
@@ -246,15 +252,15 @@ export default function ImageDetailModal({ image, onClose }) {
 
                       <div className="grid grid-cols-3 gap-2 text-center text-xs">
                         <div className="bg-gray-900 border border-gray-800 rounded-lg p-2">
-                          <p className="text-[10px] text-gray-500 uppercase">Integrity</p>
+                          <p className="text-[10px] text-gray-500 uppercase">{isHi ? 'स्थायित्व' : 'Integrity'}</p>
                           <p className="text-sm font-bold text-white mt-0.5">{integrityScore}%</p>
                         </div>
                         <div className="bg-gray-900 border border-gray-800 rounded-lg p-2">
-                          <p className="text-[10px] text-gray-500 uppercase">Siltation</p>
+                          <p className="text-[10px] text-gray-500 uppercase">{isHi ? 'गाद स्तर' : 'Siltation'}</p>
                           <p className="text-xs font-bold text-amber-400 mt-1">{siltLevel}</p>
                         </div>
                         <div className="bg-gray-900 border border-gray-800 rounded-lg p-2">
-                          <p className="text-[10px] text-gray-500 uppercase">Capacity</p>
+                          <p className="text-[10px] text-gray-500 uppercase">{isHi ? 'क्षमता' : 'Capacity'}</p>
                           <p className="text-sm font-bold text-emerald-400 mt-0.5">{capacityPct}%</p>
                         </div>
                       </div>
@@ -263,11 +269,11 @@ export default function ImageDetailModal({ image, onClose }) {
                     {/* Field & EXIF Metadata */}
                     <div className="border border-gray-800 rounded-xl p-3.5 bg-gray-950/40">
                       <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">
-                        EXIF & Survey Metadata
+                        {isHi ? 'EXIF एवं सर्वेक्षण मेटाडेटा' : 'EXIF & Survey Metadata'}
                       </p>
                       <MetaRow
                         icon={MapPin}
-                        label="GPS Coordinates"
+                        label={isHi ? 'जीपीएस निर्देशांक' : 'GPS Coordinates'}
                         value={
                           image.latitude && image.longitude
                             ? `${image.latitude.toFixed(6)}° N, ${image.longitude.toFixed(6)}° E`
@@ -276,22 +282,22 @@ export default function ImageDetailModal({ image, onClose }) {
                       />
                       <MetaRow
                         icon={Mountain}
-                        label="Elevation"
+                        label={isHi ? 'ऊंचाई' : 'Elevation'}
                         value={image.altitude_m ? `${Math.round(image.altitude_m)} m ASL` : '585 m ASL'}
                       />
                       <MetaRow
                         icon={Clock}
-                        label="Capture Timestamp"
+                        label={isHi ? 'कैप्चर समय' : 'Capture Timestamp'}
                         value={image.captured_at ? format(new Date(image.captured_at), 'dd MMM yyyy, hh:mm a') : null}
                       />
                       <MetaRow
                         icon={Smartphone}
-                        label="Field Device"
+                        label={isHi ? 'उपकरण' : 'Field Device'}
                         value={image.device_model ?? 'Android DRISHTI Survey Tool'}
                       />
                       <MetaRow
                         icon={Camera}
-                        label="Micro-Watershed"
+                        label={isHi ? 'जलसंभर' : 'Micro-Watershed'}
                         value={image.watershed_name ?? 'Bhor Catchment (Pune, MH)'}
                       />
                     </div>
@@ -299,7 +305,7 @@ export default function ImageDetailModal({ image, onClose }) {
                     {/* Actionable Engineering Recommendations */}
                     <div className="p-3.5 bg-emerald-950/20 border border-emerald-900/40 rounded-xl">
                       <p className="text-xs font-bold text-emerald-400 uppercase tracking-wider mb-2">
-                        DoLR Maintenance Protocol
+                        {isHi ? 'विभाग (DoLR) रखरखाव दिशानिर्देश' : 'DoLR Maintenance Protocol'}
                       </p>
                       <ul className="space-y-1.5">
                         {recs.map((rec, i) => (

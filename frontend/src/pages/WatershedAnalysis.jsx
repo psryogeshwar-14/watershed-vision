@@ -3,9 +3,11 @@ import WatershedMap from '../components/Map/WatershedMap.jsx'
 import AnalyticsDashboard from '../components/Dashboard/AnalyticsDashboard.jsx'
 import NDVIChart from '../components/Dashboard/NDVIChart.jsx'
 import Sidebar from '../components/Layout/Sidebar.jsx'
+import { useLanguage } from '../services/i18n.js'
 
 export default function WatershedAnalysis() {
   const { id } = useParams()
+  const { t } = useLanguage()
 
   return (
     <div className="flex h-[calc(100vh-4rem)] overflow-hidden">
@@ -22,7 +24,7 @@ export default function WatershedAnalysis() {
         {/* NDVI Chart (bottom 40%) */}
         <div className="h-64 bg-gray-900 border-t border-gray-800 p-4 overflow-hidden">
           <h3 className="text-white font-semibold text-sm mb-2 flex items-center gap-2">
-            📈 NDVI Vegetation Index — Time Series
+            📈 {t('chartNdviTitle')}
           </h3>
           <NDVIChart watershedId={id} height={190} />
         </div>
@@ -32,7 +34,7 @@ export default function WatershedAnalysis() {
       <div className="w-80 bg-gray-900 border-l border-gray-800 overflow-y-auto hidden xl:block">
         <div className="p-4">
           <h2 className="text-white font-semibold text-sm uppercase tracking-wider mb-4">
-            Analytics
+            {t('dashTitle')}
           </h2>
           <AnalyticsDashboard watershedId={id} compact />
         </div>
