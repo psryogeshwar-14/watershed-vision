@@ -1,6 +1,8 @@
 import { useState } from 'react'
-import { Map, Layers, Droplets, GitBranch, Thermometer, Activity, X, Download, Eye } from 'lucide-react'
+import { Map, Layers, Droplets, GitBranch, Thermometer, Activity, X, Download, Eye, Sparkles } from 'lucide-react'
 import WatershedMap from '../components/Map/WatershedMap.jsx'
+import BeforeAfterSwipeMap from '../components/Map/BeforeAfterSwipeMap.jsx'
+import { useLanguage } from '../services/i18n.js'
 import toast from 'react-hot-toast'
 
 const THEMATIC_MAPS = [
@@ -125,6 +127,28 @@ export default function ThematicMaps() {
             <option>Tumkur Watershed — Karnataka</option>
           </select>
         </div>
+      </div>
+
+      {/* Interactive Before & After Satellite Change Detection Section */}
+      <div className="mb-10">
+        <BeforeAfterSwipeMap
+          watershedName={selectedWatershed}
+          beforeYear="May 2021 (Pre-Intervention Baseline)"
+          afterYear="Oct 2024 (Post-Monsoon Impact)"
+          ndviGain="+0.21"
+          waterGainHa="18.4"
+          moistureGainPct="32"
+        />
+      </div>
+
+      <div className="mb-6 flex items-center justify-between">
+        <div>
+          <h2 className="text-xl font-bold text-white tracking-tight">Available Thematic Products</h2>
+          <p className="text-xs text-gray-400 mt-0.5">Sentinel-2 MSI & SRTM DEM analytical layers ready for GIS export</p>
+        </div>
+        <span className="text-xs text-emerald-400 bg-emerald-950/70 border border-emerald-800 px-3 py-1 rounded-full font-mono">
+          6 Active Products
+        </span>
       </div>
 
       {/* Map cards grid */}

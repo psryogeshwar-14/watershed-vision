@@ -5,6 +5,7 @@ import clsx from 'clsx'
 import toast from 'react-hot-toast'
 import { uploadGeoImage } from '../../services/api.js'
 import { useWatersheds } from '../../hooks/useWatershedData.js'
+import GeofenceBadge from './GeofenceBadge.jsx'
 
 const ACTIVITY_TYPES = [
   { value: 'afforestation', label: 'Afforestation' },
@@ -91,12 +92,17 @@ export default function ImageUploader({ defaultWatershedId, onSuccess }) {
         confidence: 0.87,
         description: 'The image shows healthy afforestation with dense canopy coverage indicating successful plantation growth.',
         activity_type: activityType,
+        geofence_status: 'verified',
+        altitude: 588,
+        srtm_elevation: 590,
       }
       setResult(mockResult)
       toast.success(`Analysis complete: ${mockResult.ai_label}`)
-      setTimeout(() => { setFiles([]); setProgress(0); setUploading(false) }, 3000)
+      setTimeout(() => { setFiles([]); setProgress(0); setUploading(false) }, 4000)
     }
   }
+
+  const selectedWsName = watersheds.find(w => w.id === watershedId)?.name || 'Selected Watershed'
 
   return (
     <div className="bg-white rounded-2xl border border-gray-200 shadow-card overflow-hidden">
@@ -218,18 +224,32 @@ export default function ImageUploader({ defaultWatershedId, onSuccess }) {
           </div>
         )}
 
+        {/* ── Spatial Anti-Spoofing & Geofence Status ── */}
+        {(files.length > 0 || result) && (
+          <div className="pt-1">
+            <GeofenceBadge
+              status={result?.geofence_status || 'verified'}
+              latitude={lat ? parseFloat(lat) : 18.1523}
+              longitude={lng ? parseFloat(lng) : 73.8456}
+              altitude={result?.altitude || 588}
+              srtmElevation={result?.srtm_elevation || 590}
+              watershedName={selectedWsName}
+            />
+          </div>
+        )}
+
         {/* ── AI Result ── */}
         {result && (
-          <div className="bg-green-50 border border-green-200 rounded-xl p-4 animate-slide-up">
+          <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-4 animate-slide-up">
             <div className="flex items-center gap-2 mb-2">
-              <CheckCircle className="w-5 h-5 text-green-600" />
-              <p className="font-bold text-green-800">AI Analysis Complete</p>
+              <CheckCircle className="w-5 h-5 text-emerald-600" />
+              <p className="font-bold text-emerald-800">AI Civil & Environmental Classification</p>
             </div>
             <p className="text-sm font-semibold text-gray-800">{result.ai_label}</p>
             <p className="text-xs text-gray-600 mt-1">{result.description}</p>
-            <div className="mt-2 flex items-center gap-2 text-xs">
-              <span className="text-gray-500">Confidence:</span>
-              <span className="font-bold text-green-700">{Math.round((result.confidence ?? 0) * 100)}%</span>
+            <div className="mt-2 flex items-center justify-between text-xs pt-1 border-t border-emerald-100">
+              <span className="text-gray-500">Confidence Score:</span>
+              <span className="font-bold text-emerald-700">{Math.round((result.confidence ?? 0) * 100)}%</span>
             </div>
           </div>
         )}

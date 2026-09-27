@@ -30,27 +30,34 @@ class ClassificationResult:
     confidence: float                    # 0.0 – 1.0
     description: str
     recommendations: str
+    structural_integrity_score: float = 85.0  # 0 - 100%
+    siltation_level: str = "Low (<15%)"
+    capacity_retention_pct: float = 90.0
+    maintenance_urgency: str = "Routine"
     is_mock: bool = False
 
 
 # ── Prompt ────────────────────────────────────────────────────────────────────
 
 _SYSTEM_PROMPT = """
-You are an expert in watershed management and rural land conservation for 
-the Indian subcontinent (Maharashtra focus). Analyse the provided field 
-photograph and classify the primary land intervention or observation visible.
+You are an expert watershed civil engineer and rural conservation specialist 
+for India's Ministry of Rural Development (WDC-PMKSY / DoLR guidelines). 
+Analyse the provided field photograph of a watershed development structure.
 
-Respond ONLY with a JSON object containing exactly these keys:
-  "label"           : one of [check_dam, contour_bund, afforestation,
-                              water_body, soil_erosion, drainage, other]
-  "confidence"      : float between 0.0 and 1.0
-  "description"     : 2-3 sentence factual description of what you see
-  "recommendations" : 1-2 actionable maintenance or improvement suggestions
+Respond ONLY with a valid JSON object containing exactly these keys:
+  "label"                      : one of [check_dam, contour_bund, afforestation,
+                                         water_body, soil_erosion, drainage, other]
+  "confidence"                 : float between 0.0 and 1.0
+  "description"                : 2-3 sentence factual civil-engineering description
+  "recommendations"            : 1-2 actionable maintenance or desilting suggestions
+  "structural_integrity_score" : float between 0.0 and 100.0 (structural soundness)
+  "siltation_level"            : one of ["Low (<15%)", "Moderate (15-40%)", "Severe (>40%)"]
+  "capacity_retention_pct"     : float between 0.0 and 100.0 (effective storage volume left)
+  "maintenance_urgency"        : one of ["Routine", "Pre-Monsoon Inspection", "Immediate Action Required"]
 
 Rules:
-- Be conservative: if unsure, lower confidence and use "other".
-- Focus on watershed health indicators visible in the image.
-- Keep descriptions objective and field-report style.
+- Be conservative: if erosion or cracks are visible, lower integrity score.
+- Keep descriptions objective and technical (civil / agro-forestry terms).
 - Return valid JSON only, no markdown fences.
 """.strip()
 
@@ -59,68 +66,82 @@ Rules:
 _MOCK_CLASSIFICATIONS = [
     ClassificationResult(
         label="check_dam",
-        confidence=0.87,
+        confidence=0.94,
         description=(
             "A stone masonry check dam is visible across a seasonal nala. "
-            "The structure appears to be in good condition with water ponding "
-            "upstream, indicating effective water retention."
+            "Structure shows sound headwall with slight sediment ponding upstream."
         ),
         recommendations=(
-            "Inspect the spillway for scouring after each monsoon season. "
-            "Consider planting vetiver grass on the downstream slope for erosion protection."
+            "Inspect spillway for scouring after monsoon. Plant vetiver grass along the banks."
         ),
+        structural_integrity_score=88.5,
+        siltation_level="Low (<15%)",
+        capacity_retention_pct=92.0,
+        maintenance_urgency="Routine",
         is_mock=True,
     ),
     ClassificationResult(
         label="contour_bund",
-        confidence=0.82,
+        confidence=0.88,
         description=(
-            "Earthen contour bunds are visible on a gently sloping agricultural "
-            "field. The bunds follow the land contours and appear recently maintained."
+            "Earthen contour bunds and continuous contour trenches (CCT) along agricultural slopes. "
+            "Bund geometry conforms to contour interval with intact cross-sections."
         ),
         recommendations=(
-            "Fill any gaps or breaches in the bunds before the monsoon. "
-            "Plant perennial grasses on bund tops to increase stability."
+            "Fill minor gaps before onset of monsoon. Plant stylosanthes grass on bund tops."
         ),
+        structural_integrity_score=82.0,
+        siltation_level="Moderate (15-40%)",
+        capacity_retention_pct=78.5,
+        maintenance_urgency="Pre-Monsoon Inspection",
         is_mock=True,
     ),
     ClassificationResult(
         label="afforestation",
-        confidence=0.79,
+        confidence=0.92,
         description=(
-            "Newly planted saplings in rows indicate a recent afforestation effort "
-            "on a degraded hillslope. Tree guards are present around saplings."
+            "Community plantation and afforestation plot on degraded slopes. "
+            "Native tree saplings (Neem, Subabul) display over 85% survival rate with mulch."
         ),
         recommendations=(
-            "Ensure adequate gap-filling for saplings lost to dry spells. "
-            "Mulch around each sapling to conserve soil moisture."
+            "Ensure regular gap filling for perished saplings. Maintain drip lines or pot watering."
         ),
+        structural_integrity_score=90.0,
+        siltation_level="Low (<15%)",
+        capacity_retention_pct=95.0,
+        maintenance_urgency="Routine",
         is_mock=True,
     ),
     ClassificationResult(
         label="soil_erosion",
-        confidence=0.91,
+        confidence=0.95,
         description=(
-            "Severe rill and gully erosion is evident on bare soil slopes. "
-            "The topsoil layer appears to have been stripped over a significant area."
+            "Active severe rill and gully erosion on unbunded agricultural slope. "
+            "Topsoil layer stripped, threatening downstream siltation."
         ),
         recommendations=(
-            "Immediately install brushwood check dams in gullies to halt further erosion. "
-            "Plan for grass seeding and contour trenching in the next planting season."
+            "Install immediate brushwood check dams and loose boulder structures. Plan for CCT next season."
         ),
+        structural_integrity_score=35.0,
+        siltation_level="Severe (>40%)",
+        capacity_retention_pct=25.0,
+        maintenance_urgency="Immediate Action Required",
         is_mock=True,
     ),
     ClassificationResult(
         label="water_body",
-        confidence=0.94,
+        confidence=0.96,
         description=(
-            "A percolation tank / farm pond is visible with adequate storage. "
-            "Water surface shows minimal turbidity and vegetation encroachment is limited."
+            "Farm pond (Khet Talav) lined with HDPE geomembrane with clear water catchment. "
+            "Riparian embankment shows adequate freeboard above full supply level."
         ),
         recommendations=(
-            "De-silt the pond before next monsoon to restore storage capacity. "
-            "Establish a buffer zone of native vegetation around the bund."
+            "De-silt inlet silt trap before next monsoon. Maintain protective fence around pond perimeter."
         ),
+        structural_integrity_score=94.0,
+        siltation_level="Low (<15%)",
+        capacity_retention_pct=91.0,
+        maintenance_urgency="Routine",
         is_mock=True,
     ),
 ]
@@ -242,11 +263,20 @@ class ImageClassifier:
         if label not in valid_labels:
             label = "other"
 
+        integrity = float(parsed.get("structural_integrity_score", 85.0))
+        silt_level = str(parsed.get("siltation_level", "Low (<15%)"))
+        capacity = float(parsed.get("capacity_retention_pct", 90.0))
+        urgency = str(parsed.get("maintenance_urgency", "Routine"))
+
         return ClassificationResult(
             label=label,
             confidence=max(0.0, min(1.0, float(parsed.get("confidence", 0.5)))),
             description=str(parsed.get("description", "")),
             recommendations=str(parsed.get("recommendations", "")),
+            structural_integrity_score=max(0.0, min(100.0, integrity)),
+            siltation_level=silt_level,
+            capacity_retention_pct=max(0.0, min(100.0, capacity)),
+            maintenance_urgency=urgency,
             is_mock=False,
         )
 
