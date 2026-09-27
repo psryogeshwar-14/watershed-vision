@@ -1,5 +1,5 @@
 import { Camera, MapPin, Activity, Droplets, TrendingUp, TrendingDown } from 'lucide-react'
-import { format } from 'date-fns'
+import { safeFormat } from '../../utils/date.js'
 import clsx from 'clsx'
 import NDVIChart from './NDVIChart.jsx'
 import WatershedHealthGauge from './WatershedHealthGauge.jsx'
@@ -100,7 +100,7 @@ function RecentImages({ images, t }) {
             <div className="flex-1 min-w-0">
               <p className="text-xs font-semibold text-gray-200 truncate">{img.ai_label}</p>
               <p className="text-[11px] text-gray-400 truncate">
-                {img.watershed_name} · {img.captured_at ? format(new Date(img.captured_at), 'dd MMM yy') : '—'}
+                {img.watershed_name} · {safeFormat(img.captured_at, 'dd MMM yy')}
               </p>
             </div>
             <span

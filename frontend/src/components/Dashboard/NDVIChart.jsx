@@ -9,8 +9,8 @@ import {
   Area,
   ComposedChart,
 } from 'recharts'
-import { format, parseISO } from 'date-fns'
 import { subMonths } from 'date-fns'
+import { safeFormat } from '../../utils/date.js'
 import { useLanguage } from '../../services/i18n.js'
 
 // Generate mock series if not provided
@@ -21,7 +21,7 @@ function generateMockSeries(months = 18) {
     const base = 0.35 + Math.sin((i / months) * Math.PI) * 0.28
     const mean = parseFloat((base + (Math.random() - 0.5) * 0.06).toFixed(3))
     return {
-      date: format(date, 'yyyy-MM-dd'),
+      date: safeFormat(date, 'yyyy-MM-dd'),
       ndvi_mean: Math.max(0, Math.min(1, mean)),
       ndvi_min:  Math.max(0, Math.min(1, mean - 0.12 - Math.random() * 0.04)),
       ndvi_max:  Math.max(0, Math.min(1, mean + 0.12 + Math.random() * 0.04)),
@@ -34,10 +34,11 @@ const MOCK_SERIES = generateMockSeries()
 function CustomTooltip({ active, payload, label, t }) {
   if (!active || !payload?.length) return null
   const d = payload[0]?.payload
+  const title = d?.date ? safeFormat(d.date, 'dd MMM yyyy') : (label || '')
   return (
     <div className="bg-gray-900 text-white rounded-lg px-3 py-2.5 shadow-xl text-xs">
-      <p className="font-semibold mb-1">
-        {label ? format(parseISO(label), 'dd MMM yyyy') : ''}
+      <p className="font-semibold mb-1 text-gray-200">
+        {title}
       </p>
       <p className="text-green-400">{t('chartMeanNdvi')}: <strong>{d?.ndvi_mean?.toFixed(3)}</strong></p>
       <p className="text-gray-400">{t('chartRange')}: {d?.ndvi_min?.toFixed(3)} – {d?.ndvi_max?.toFixed(3)}</p>
@@ -45,15 +46,18 @@ function CustomTooltip({ active, payload, label, t }) {
   )
 }
 
-export default function NDVIChart({ series }) {
+export default function NDVIChart({ series, height = 200 }) {
   const { t } = useLanguage()
   const data = Array.isArray(series) && series.length > 0 ? series : MOCK_SERIES
 
-  const formatted = data.map((d) => ({
-    ...d,
-    label: d.date,
-    display: format(parseISO(d.date), 'MMM yy'),
-  }))
+  const formatted = data.map((d) => {
+    const displayVal = d.display || safeFormat(d.date, 'MMM yy')
+    return {
+      ...d,
+      label: displayVal,
+      display: displayVal,
+    }
+  })
 
   return (
     <div className="bg-white rounded-xl p-5 shadow-card border border-gray-100 animate-slide-up">
@@ -72,7 +76,7 @@ export default function NDVIChart({ series }) {
         </div>
       </div>
 
-      <ResponsiveContainer width="100%" height={200}>
+      <ResponsiveContainer width="100%" height={height}>
         <ComposedChart data={formatted} margin={{ top: 4, right: 12, left: -16, bottom: 0 }}>
           <defs>
             <linearGradient id="ndviRange" x1="0" y1="0" x2="0" y2="1">

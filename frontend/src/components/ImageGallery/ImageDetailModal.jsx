@@ -13,7 +13,7 @@ import {
   Share2,
   Wrench,
 } from 'lucide-react'
-import { format } from 'date-fns'
+import { safeFormat } from '../../utils/date.js'
 import GeofenceBadge from '../Upload/GeofenceBadge.jsx'
 import { useLanguage } from '../../services/i18n.js'
 
@@ -286,7 +286,7 @@ export default function ImageDetailModal({ image, onClose }) {
                       <MetaRow
                         icon={Clock}
                         label={isHi ? 'कैप्चर समय' : 'Capture Timestamp'}
-                        value={image.captured_at ? format(new Date(image.captured_at), 'dd MMM yyyy, hh:mm a') : null}
+                        value={safeFormat(image.captured_at, 'dd MMM yyyy, hh:mm a', null)}
                       />
                       <MetaRow
                         icon={Smartphone}

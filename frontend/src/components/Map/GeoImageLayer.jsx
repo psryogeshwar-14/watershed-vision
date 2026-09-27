@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Marker, Popup } from 'react-leaflet'
 import L from 'leaflet'
-import { format } from 'date-fns'
+import { safeFormat } from '../../utils/date.js'
 import { useGeoImages, MOCK_GEO_IMAGES } from '../../hooks/useWatershedData.js'
 import ImageDetailModal from '../ImageGallery/ImageDetailModal.jsx'
 
@@ -106,7 +106,7 @@ export default function GeoImageLayer({ watershedId, onImageClick }) {
 
                   <div className="mt-2 flex items-center justify-between text-xs text-gray-500">
                     <span>📍 {img.latitude?.toFixed(4)}, {img.longitude?.toFixed(4)}</span>
-                    <span>{img.captured_at ? format(new Date(img.captured_at), 'dd MMM yyyy') : '—'}</span>
+                    <span>{safeFormat(img.captured_at, 'dd MMM yyyy')}</span>
                   </div>
 
                   <button

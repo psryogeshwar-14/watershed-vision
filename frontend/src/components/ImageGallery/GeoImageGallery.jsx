@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { format } from 'date-fns'
+import { safeFormat } from '../../utils/date.js'
 import { SlidersHorizontal, ChevronLeft, ChevronRight, Search, MapPin, Calendar, Sparkles } from 'lucide-react'
 import clsx from 'clsx'
 import { useGeoImages, useWatersheds, MOCK_GEO_IMAGES } from '../../hooks/useWatershedData.js'
@@ -93,7 +93,7 @@ function ImageCard({ image, onClick, t }) {
           <ConfidenceBar value={image.confidence} t={t} />
           <p className="text-[11px] text-gray-500 flex items-center gap-1.5">
             <Calendar className="w-3 h-3 text-gray-500" />
-            {image.captured_at ? format(new Date(image.captured_at), 'dd MMM yyyy, HH:mm') : '—'}
+            {safeFormat(image.captured_at, 'dd MMM yyyy, HH:mm')}
           </p>
         </div>
       </div>

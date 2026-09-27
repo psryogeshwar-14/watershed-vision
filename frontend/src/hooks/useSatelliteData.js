@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { getSatelliteNDVI, getWaterBodies, getChangeDetection } from '../services/api.js'
-import { subMonths, format } from 'date-fns'
+import { subMonths } from 'date-fns'
+import { safeFormat } from '../utils/date.js'
 
 // ─── Mock satellite NDVI data ────────────────────────────────────
 function generateMockNDVI(months = 12) {
@@ -9,7 +10,7 @@ function generateMockNDVI(months = 12) {
     const date = subMonths(now, months - 1 - i)
     const base = 0.42 + Math.sin((i / months) * Math.PI) * 0.25
     return {
-      date: format(date, 'yyyy-MM-dd'),
+      date: safeFormat(date, 'yyyy-MM-dd'),
       ndvi_mean: parseFloat((base + (Math.random() - 0.5) * 0.08).toFixed(3)),
       ndvi_min:  parseFloat((base - 0.12 - Math.random() * 0.05).toFixed(3)),
       ndvi_max:  parseFloat((base + 0.12 + Math.random() * 0.05).toFixed(3)),
