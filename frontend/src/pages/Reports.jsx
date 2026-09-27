@@ -345,16 +345,28 @@ export default function Reports() {
             </div>
 
             {/* ── Section 3: Satellite Timeseries Trend ── */}
-            <div className="mb-6 bg-gray-50 border border-gray-200 rounded-xl p-4">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-xs font-bold text-gray-800 uppercase tracking-wider flex items-center gap-1.5">
-                  <Activity className="w-3.5 h-3.5 text-emerald-600" />
-                  Multi-Seasonal NDVI Vegetation Trend (Sentinel-2 L2A Harmonized)
-                </span>
-                <span className="text-[10px] text-gray-500 font-mono">10m Spatial Resolution</span>
+            <div className="mb-6 bg-white border border-gray-200 rounded-xl p-4 shadow-sm overflow-hidden">
+              <div className="flex flex-wrap items-center justify-between gap-2 mb-3 pb-2.5 border-b border-gray-100">
+                <div className="flex items-center gap-2">
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-emerald-900 border-l-4 border-emerald-600 pl-2 flex items-center gap-1.5">
+                    <Activity className="w-3.5 h-3.5 text-emerald-600" />
+                    3. Multi-Seasonal NDVI Vegetation Trend / बहु-मौसमी वनस्पति सूचकांक
+                  </h3>
+                  <span className="text-[10px] text-gray-400 font-mono hidden sm:inline">(Sentinel-2 L2A · 10m)</span>
+                </div>
+                <div className="flex items-center gap-3 text-xs">
+                  <span className="flex items-center gap-1.5 text-gray-700 font-medium text-[11px]">
+                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-600 inline-block" />
+                    {isHi ? 'औसत एनडीवीआई' : 'Mean NDVI'}
+                  </span>
+                  <span className="flex items-center gap-1.5 text-gray-500 text-[11px]">
+                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-200 inline-block" />
+                    {isHi ? 'न्यूनतम-अधिकतम' : 'Min–Max'}
+                  </span>
+                </div>
               </div>
-              <div className="h-40">
-                <NDVIChart watershedId={selectedWatershed} height={140} />
+              <div className="w-full h-48 pt-1">
+                <NDVIChart watershedId={selectedWatershed} height={180} showHeader={false} />
               </div>
             </div>
 
@@ -362,7 +374,7 @@ export default function Reports() {
             <div className="mb-6">
               <div className="flex items-center justify-between mb-2">
                 <h3 className="text-xs font-bold uppercase tracking-wider text-emerald-900 border-l-4 border-emerald-600 pl-2">
-                  3. Field Survey Audit Trail & Anti-Spoofing Log / फील्ड सत्यापन रिपोर्ट
+                  4. Field Survey Audit Trail & Anti-Spoofing Log / फील्ड सत्यापन रिपोर्ट
                 </h3>
                 <span className="text-[10px] text-gray-500 font-medium">
                   {meta.auditTrail.length} Certified Geo-Inspections

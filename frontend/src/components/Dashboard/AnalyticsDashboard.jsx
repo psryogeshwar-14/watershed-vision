@@ -169,7 +169,7 @@ export default function AnalyticsDashboard({ watershedId, compact = false }) {
           <h3 className="text-xs font-semibold text-gray-300 uppercase tracking-wider mb-2">
             {t('chartNdviTitle')}
           </h3>
-          <NDVIChart series={ndviSeries} height={180} />
+          <NDVIChart series={ndviSeries} height={180} showHeader={false} />
         </div>
       )}
 

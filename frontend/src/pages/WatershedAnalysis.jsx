@@ -26,7 +26,7 @@ export default function WatershedAnalysis() {
           <h3 className="text-white font-semibold text-sm mb-2 flex items-center gap-2">
             📈 {t('chartNdviTitle')}
           </h3>
-          <NDVIChart watershedId={id} height={190} />
+          <NDVIChart watershedId={id} height={190} showHeader={false} />
         </div>
       </div>
 
