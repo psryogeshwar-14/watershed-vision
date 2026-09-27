@@ -32,8 +32,6 @@ export default function WatershedHealthGauge({ score = 72 }) {
   const needleAngle = 180 - (s / 100) * 180
   const needleRad = toRad(needleAngle)
   const needleLen = radius - stroke / 2 - 8
-  const needleX = cx + needleLen * Math.cos(needleRad)
-  const needleY = cy - needleLen * Math.sin(toRad(180 - needleAngle))
 
   return (
     <div className="flex flex-col items-center">
@@ -61,9 +59,6 @@ export default function WatershedHealthGauge({ score = 72 }) {
         {/* Ticks */}
         {[0, 25, 50, 75, 100].map((tick) => {
           const a = toRad(180 - (tick / 100) * 180)
-          const x1 = cx + (radius - stroke - 4) * Math.cos(a)
-          const y1 = cy - (radius - stroke - 4) * Math.sin(a)  // flip y for svg
-          const y1svg = cy + (radius - stroke - 4) * Math.sin(toRad(180 - (tick / 100) * 180)) * (tick <= 50 ? -1 : 1)
           return (
             <text
               key={tick}
@@ -82,8 +77,8 @@ export default function WatershedHealthGauge({ score = 72 }) {
         <line
           x1={cx}
           y1={cy}
-          x2={cx + needleLen * Math.cos(toRad(needleAngle))}
-          y2={cy - needleLen * Math.sin(toRad(needleAngle))}
+          x2={cx + needleLen * Math.cos(needleRad)}
+          y2={cy - needleLen * Math.sin(needleRad)}
           stroke={cfg.color}
           strokeWidth={2.5}
           strokeLinecap="round"

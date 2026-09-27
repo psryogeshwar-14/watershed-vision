@@ -12,9 +12,6 @@ import {
   Download,
   Share2,
   Wrench,
-  ShieldCheck,
-  Activity,
-  Layers,
 } from 'lucide-react'
 import { format } from 'date-fns'
 import GeofenceBadge from '../Upload/GeofenceBadge.jsx'
@@ -101,9 +98,10 @@ const RECOMMENDATIONS = {
 }
 
 export default function ImageDetailModal({ image, onClose }) {
-  if (!image) return null
   const { t, lang } = useLanguage()
   const isHi = lang === 'hi'
+
+  if (!image) return null
 
   const badgeCls = BADGE_MAP[image.activity_type] ?? 'bg-gray-800 text-gray-300 border-gray-700'
   const translated = t(image.activity_type)

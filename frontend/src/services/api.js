@@ -32,13 +32,18 @@ api.interceptors.response.use(
  * @param {File} file
  * @param {string|number} watershedId
  * @param {string} activityType
+ * @param {number|string} [lat]
+ * @param {number|string} [lng]
  */
-export async function uploadGeoImage(file, watershedId, activityType) {
+export async function uploadGeoImage(file, watershedId, activityType, lat, lng) {
   const formData = new FormData()
+  formData.append('file', file)
   formData.append('image', file)
-  formData.append('watershed_id', watershedId)
-  formData.append('activity_type', activityType)
-  return api.post('/images/upload/', formData, {
+  if (watershedId) formData.append('watershed_id', watershedId)
+  if (activityType) formData.append('activity_type', activityType)
+  if (lat) formData.append('latitude', lat)
+  if (lng) formData.append('longitude', lng)
+  return api.post('/images/upload', formData, {
     headers: { 'Content-Type': 'multipart/form-data' },
   })
 }

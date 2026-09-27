@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Upload, Map, BarChart2, FileText, Droplets, TrendingUp, Eye, Activity } from 'lucide-react'
+import { Upload, Map, BarChart2, FileText, TrendingUp, Eye, Activity } from 'lucide-react'
 import WatershedMap from '../components/Map/WatershedMap.jsx'
 import AnalyticsDashboard from '../components/Dashboard/AnalyticsDashboard.jsx'
 import ImageUploader from '../components/Upload/ImageUploader.jsx'

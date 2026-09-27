@@ -1,10 +1,9 @@
 import { useState } from 'react'
 import { 
-  FileText, Download, Printer, ShieldCheck, CheckCircle2, 
-  MapPin, Mountain, AlertCircle, QrCode, Building, Award, Calendar, Layers, Activity
+  Download, Printer, ShieldCheck, CheckCircle2, 
+  QrCode, Building, Activity
 } from 'lucide-react'
 import NDVIChart from '../components/Dashboard/NDVIChart.jsx'
-import WatershedHealthGauge from '../components/Dashboard/WatershedHealthGauge.jsx'
 import { useLanguage } from '../services/i18n.js'
 
 const WATERSHED_METADATA = {
@@ -90,7 +89,7 @@ export default function Reports() {
   const [selectedWatershed, setSelectedWatershed] = useState('ws-001')
   const [selectedReport, setSelectedReport] = useState('audit_dossier')
   const [generating, setGenerating] = useState(false)
-  const [timestamp, setTimestamp] = useState('27-Sep-2024')
+  const timestamp = '27-Sep-2024'
 
   const meta = WATERSHED_METADATA[selectedWatershed] || WATERSHED_METADATA['ws-001']
 

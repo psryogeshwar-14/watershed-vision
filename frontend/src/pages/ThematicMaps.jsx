@@ -1,84 +1,9 @@
 import { useState } from 'react'
-import { Map, Layers, Droplets, GitBranch, Thermometer, Activity, X, Download, Eye, Sparkles } from 'lucide-react'
+import { Map, Layers, Droplets, GitBranch, Thermometer, Activity, X, Eye } from 'lucide-react'
 import WatershedMap from '../components/Map/WatershedMap.jsx'
 import BeforeAfterSwipeMap from '../components/Map/BeforeAfterSwipeMap.jsx'
 import { useLanguage } from '../services/i18n.js'
 import toast from 'react-hot-toast'
-
-const THEMATIC_MAPS = [
-  {
-    id: 'lulc',
-    layerType: 'lulc',
-    title: 'Land Use / Land Cover (LULC)',
-    description: 'Classification of land into agriculture, forest, water bodies, built-up, and barren categories based on Sentinel-2 imagery.',
-    icon: Layers,
-    color: 'from-green-900 to-emerald-800',
-    badge: 'Sentinel-2',
-    badgeColor: 'bg-emerald-700',
-    stats: '6 classes · 30m resolution',
-    gradient: 'linear-gradient(135deg, #064e3b, #065f46, #047857)',
-  },
-  {
-    id: 'ndvi',
-    layerType: 'ndvi',
-    title: 'Vegetation Index Map (NDVI)',
-    description: 'Normalized Difference Vegetation Index showing vegetation health across the watershed. Higher values indicate denser, healthier vegetation.',
-    icon: Activity,
-    color: 'from-lime-900 to-green-800',
-    badge: 'Sentinel-2 B8/B4',
-    badgeColor: 'bg-lime-700',
-    stats: 'Range: -1 to +1 · Monthly composite',
-    gradient: 'linear-gradient(135deg, #365314, #4d7c0f, #84cc16)',
-  },
-  {
-    id: 'water',
-    layerType: 'ndwi',
-    title: 'Water Body Extent Map',
-    description: 'Mapping of surface water bodies including ponds, check dams, percolation tanks, and rivers using NDWI spectral index.',
-    icon: Droplets,
-    color: 'from-blue-900 to-cyan-800',
-    badge: 'NDWI · Sentinel-2',
-    badgeColor: 'bg-blue-700',
-    stats: 'Water area estimate in ha',
-    gradient: 'linear-gradient(135deg, #0c4a6e, #0369a1, #0ea5e9)',
-  },
-  {
-    id: 'drainage',
-    layerType: 'drainage',
-    title: 'Drainage Network Map',
-    description: 'Automated delineation of stream networks and drainage basins derived from SRTM Digital Elevation Model analysis.',
-    icon: GitBranch,
-    color: 'from-sky-900 to-indigo-800',
-    badge: 'SRTM DEM · 30m',
-    badgeColor: 'bg-sky-700',
-    stats: 'Stream order 1–5 mapped',
-    gradient: 'linear-gradient(135deg, #1e3a5f, #1e40af, #3b82f6)',
-  },
-  {
-    id: 'soil-moisture',
-    layerType: 'ndwi',
-    title: 'Soil Moisture Index',
-    description: 'Estimated surface soil moisture using Modified Normalized Difference Water Index (MNDWI) from Sentinel-2 bands.',
-    icon: Thermometer,
-    color: 'from-amber-900 to-yellow-800',
-    badge: 'MNDWI · Sentinel-2',
-    badgeColor: 'bg-amber-700',
-    stats: 'Seasonal moisture tracking',
-    gradient: 'linear-gradient(135deg, #78350f, #b45309, #d97706)',
-  },
-  {
-    id: 'intervention-heatmap',
-    layerType: 'heatmap',
-    title: 'Intervention Heatmap',
-    description: 'Kernel density estimation of geo-tagged field images showing spatial distribution and intensity of watershed interventions.',
-    icon: Map,
-    color: 'from-red-900 to-orange-800',
-    badge: 'Geo-Images · KDE',
-    badgeColor: 'bg-red-700',
-    stats: 'Based on uploaded field images',
-    gradient: 'linear-gradient(135deg, #7f1d1d, #b91c1c, #ef4444)',
-  },
-]
 
 export default function ThematicMaps() {
   const { t } = useLanguage()

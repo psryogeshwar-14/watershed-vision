@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useMap } from 'react-leaflet'
 import L from 'leaflet'
-import { Loader2, ChevronDown } from 'lucide-react'
+import { Loader2 } from 'lucide-react'
 import { useQuery } from '@tanstack/react-query'
 import { getThematicMaps } from '../../services/api.js'
 

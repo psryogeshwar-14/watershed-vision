@@ -8,7 +8,7 @@ import { useLanguage } from '../../services/i18n.js'
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false)
   const location = useLocation()
-  const { t, lang } = useLanguage()
+  const { t } = useLanguage()
   const [, setRefresh] = useState(0)
 
   useEffect(() => {
@@ -41,7 +41,7 @@ export default function Navbar() {
           {/* Desktop nav */}
           <div className="hidden md:flex items-center gap-1.5">
             {navLinks.map(({ to, label, icon: Icon }) => {
-              const isActive = location.pathname === to
+              const isActive = location.pathname === to || (to === '/' && location.pathname.startsWith('/watershed/'))
               return (
                 <Link
                   key={to}

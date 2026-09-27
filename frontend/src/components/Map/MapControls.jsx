@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import {
   Satellite,
-  Layers,
   Droplets,
   Images,
   BarChart2,

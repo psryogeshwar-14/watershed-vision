@@ -1,5 +1,4 @@
 import { createBrowserRouter } from 'react-router-dom'
-import Layout from './components/Layout/Navbar.jsx'
 import RootLayout from './RootLayout.jsx'
 import HomePage from './pages/HomePage.jsx'
 import WatershedAnalysis from './pages/WatershedAnalysis.jsx'

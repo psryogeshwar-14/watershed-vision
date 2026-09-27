@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react'
 import { useDropzone } from 'react-dropzone'
-import { Upload, X, MapPin, Camera, CheckCircle, Loader2, Image } from 'lucide-react'
+import { Upload, X, MapPin, Camera, CheckCircle, Loader2 } from 'lucide-react'
 import clsx from 'clsx'
 import toast from 'react-hot-toast'
 import { uploadGeoImage } from '../../services/api.js'
@@ -38,6 +38,7 @@ function FilePreview({ file, onRemove }) {
 }
 
 export default function ImageUploader({ defaultWatershedId, onSuccess }) {
+  const { t } = useLanguage()
   const [files,        setFiles]        = useState([])
   const [watershedId,  setWatershedId]  = useState(defaultWatershedId ?? '')
   const [activityType, setActivityType] = useState('afforestation')
@@ -72,20 +73,22 @@ export default function ImageUploader({ defaultWatershedId, onSuccess }) {
     setUploading(true)
     setProgress(0)
 
+    let interval = null
     try {
       // Simulate progress
-      const interval = setInterval(() => {
+      interval = setInterval(() => {
         setProgress((p) => Math.min(p + 15, 90))
       }, 300)
 
-      const res = await uploadGeoImage(files[0], watershedId, activityType)
-      clearInterval(interval)
+      const res = await uploadGeoImage(files[0], watershedId, activityType, lat, lng)
+      if (interval) clearInterval(interval)
       setProgress(100)
       setResult(res)
       toast.success(`Image analyzed: ${res.ai_label ?? 'Success'}`)
       onSuccess?.(res)
       setTimeout(() => { setFiles([]); setProgress(0); setUploading(false) }, 2000)
     } catch (err) {
+      if (interval) clearInterval(interval)
       // Mock success for demo
       setProgress(100)
       const mockResult = {
@@ -103,7 +106,6 @@ export default function ImageUploader({ defaultWatershedId, onSuccess }) {
     }
   }
 
-  const { t } = useLanguage()
   const selectedWsName = watersheds.find(w => w.id === watershedId)?.name || 'Selected Watershed'
 
   return (

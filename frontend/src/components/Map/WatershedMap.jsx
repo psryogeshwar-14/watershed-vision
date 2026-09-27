@@ -12,11 +12,11 @@ import {
 import L from 'leaflet'
 import GeoImageLayer from './GeoImageLayer.jsx'
 import ThematicLayer from './ThematicLayer.jsx'
+import { Navigation } from 'lucide-react'
 import { useLanguage } from '../../services/i18n.js'
-import { Compass, Navigation } from 'lucide-react'
 
 // Canonical Watershed GeoJSON Boundaries for Demo
-export const WATERSHED_BOUNDARIES = {
+const WATERSHED_BOUNDARIES = {
   bhor: {
     id: 'bhor',
     name: 'Bhor Micro-Watershed, Pune (Maharashtra)',

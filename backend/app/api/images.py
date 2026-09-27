@@ -29,6 +29,7 @@ from fastapi import (
     BackgroundTasks,
     Depends,
     File,
+    Form,
     HTTPException,
     Query,
     UploadFile,
@@ -39,7 +40,7 @@ from sqlalchemy.orm import Session
 from geoalchemy2.functions import ST_MakePoint, ST_SetSRID
 
 from app.core.config import settings
-from app.core.database import get_db
+from app.core.database import get_db, SessionLocal
 from app.models.geo_image import ActivityType, GeoImage
 from app.services.exif_parser import parse_exif_from_bytes
 from app.services.image_classifier import image_classifier
@@ -66,11 +67,12 @@ _EXTENSION_MAP = {
 
 # ── Background task: AI classification ───────────────────────────────────────
 
-async def _classify_and_update(image_id: str, file_path: str, db: Session) -> None:
-    """Run Gemini Vision classification and write results to the database."""
+async def _classify_and_update(image_id: str, file_path: str) -> None:
+    """Run Gemini Vision classification and write results to the database using dedicated session."""
+    db = SessionLocal()
     try:
         result = await image_classifier.classify_image(file_path)
-        db.query(GeoImage).filter(GeoImage.id == image_id).update(
+        db.query(GeoImage).filter(GeoImage.id == uuid.UUID(image_id)).update(
             {
                 "ai_label": result.label,
                 "ai_confidence": result.confidence,
@@ -84,29 +86,44 @@ async def _classify_and_update(image_id: str, file_path: str, db: Session) -> No
         logger.info("AI classification complete for image %s – label=%s", image_id, result.label)
     except Exception as exc:
         logger.error("Background classification failed for %s: %s", image_id, exc)
+    finally:
+        db.close()
 
 
 # ── Upload ────────────────────────────────────────────────────────────────────
 
 @router.post("/upload", status_code=status.HTTP_201_CREATED)
+@router.post("/upload/", status_code=status.HTTP_201_CREATED)
 async def upload_image(
     background_tasks: BackgroundTasks,
-    file: UploadFile = File(...),
-    watershed_id: Optional[str] = Query(None, description="Associate with a watershed UUID"),
-    description: Optional[str] = Query(None, description="Optional field note"),
+    file: Optional[UploadFile] = File(None),
+    image: Optional[UploadFile] = File(None),
+    watershed_id: Optional[str] = Form(None),
+    activity_type: Optional[str] = Form(None),
+    description: Optional[str] = Form(None),
+    latitude: Optional[float] = Form(None),
+    longitude: Optional[float] = Form(None),
+    altitude: Optional[float] = Form(None),
     db: Session = Depends(get_db),
 ) -> dict[str, Any]:
     """
     Upload a geotagged field photograph.
 
     - Validates file type and size.
-    - Extracts GPS and capture datetime from EXIF.
+    - Extracts GPS and capture datetime from EXIF (or uses provided coordinates).
     - Saves the file to the UPLOAD_DIR.
     - Creates a database record.
     - Triggers background AI classification via Gemini Vision.
     """
+    target_file = file or image
+    if not target_file:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="No image file provided. Please send form field 'file' or 'image'.",
+        )
+
     # Validate content type
-    content_type = (file.content_type or "").lower()
+    content_type = (target_file.content_type or "").lower()
     if content_type not in _ALLOWED_TYPES:
         raise HTTPException(
             status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE,
@@ -114,7 +131,7 @@ async def upload_image(
         )
 
     # Read file bytes
-    file_bytes = await file.read()
+    file_bytes = await target_file.read()
     if len(file_bytes) > settings.MAX_FILE_SIZE:
         raise HTTPException(
             status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE,
@@ -123,6 +140,12 @@ async def upload_image(
 
     # Parse EXIF
     exif = parse_exif_from_bytes(file_bytes, content_type)
+
+    # Resolve coordinates (EXIF takes priority, fallback to form inputs)
+    final_lat = exif.latitude if exif.has_gps else latitude
+    final_lng = exif.longitude if exif.has_gps else longitude
+    final_alt = exif.altitude if exif.has_gps else altitude
+    has_gps = final_lat is not None and final_lng is not None
 
     # Generate unique filename
     ext = _EXTENSION_MAP.get(content_type, ".jpg")
@@ -137,50 +160,66 @@ async def upload_image(
 
     # Build PostGIS geometry if GPS is available
     geom = None
-    if exif.has_gps:
+    if has_gps:
         geom = ST_SetSRID(
-            ST_MakePoint(exif.longitude, exif.latitude),
+            ST_MakePoint(float(final_lng), float(final_lat)),
             4326,
         )
+
+    # Parse watershed UUID safely
+    ws_uuid = None
+    if watershed_id:
+        try:
+            ws_uuid = uuid.UUID(watershed_id)
+        except (ValueError, AttributeError):
+            ws_uuid = None
+
+    # Parse activity type safely
+    act_type = ActivityType.other
+    if activity_type:
+        try:
+            act_type = ActivityType(activity_type)
+        except (ValueError, KeyError):
+            act_type = ActivityType.other
 
     # Create DB record
     image_id = uuid.uuid4()
     geo_image = GeoImage(
         id=image_id,
         filename=unique_name,
-        original_filename=file.filename or unique_name,
+        original_filename=target_file.filename or unique_name,
         file_path=str(dest_path),
-        latitude=exif.latitude,
-        longitude=exif.longitude,
+        latitude=final_lat,
+        longitude=final_lng,
         geom=geom,
-        altitude=exif.altitude,
-        captured_at=exif.captured_at,
-        watershed_id=uuid.UUID(watershed_id) if watershed_id else None,
+        altitude=final_alt,
+        captured_at=exif.captured_at or datetime.utcnow(),
+        watershed_id=ws_uuid,
         description=description,
-        activity_type=ActivityType.other,
+        activity_type=act_type,
         is_processed=False,
     )
     db.add(geo_image)
     db.flush()
     db.refresh(geo_image)
 
-    # Schedule background classification (pass a new DB session reference)
+    # Schedule background classification
     background_tasks.add_task(
         _classify_and_update,
         str(image_id),
         str(dest_path),
-        db,
     )
 
     return {
         "id": str(image_id),
         "filename": unique_name,
-        "original_filename": file.filename,
-        "latitude": exif.latitude,
-        "longitude": exif.longitude,
-        "altitude": exif.altitude,
-        "captured_at": exif.captured_at.isoformat() if exif.captured_at else None,
-        "has_gps": exif.has_gps,
+        "original_filename": target_file.filename,
+        "latitude": final_lat,
+        "longitude": final_lng,
+        "altitude": final_alt,
+        "captured_at": (exif.captured_at or datetime.utcnow()).isoformat(),
+        "has_gps": has_gps,
+        "activity_type": act_type.value,
         "is_processed": False,
         "message": "Image uploaded. AI classification queued in background.",
     }

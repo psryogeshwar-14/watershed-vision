@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Marker, Popup, useMap } from 'react-leaflet'
+import { Marker, Popup } from 'react-leaflet'
 import L from 'leaflet'
 import { format } from 'date-fns'
 import { useGeoImages, MOCK_GEO_IMAGES } from '../../hooks/useWatershedData.js'

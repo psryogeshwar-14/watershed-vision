@@ -43,9 +43,14 @@ export default function GeofenceBadge({
           <p className="text-[10px] text-gray-500 uppercase flex items-center gap-1">
             <MapPin className="w-3 h-3 text-emerald-400" /> Boundary Geofence
           </p>
-          <p className="font-semibold text-white mt-0.5">
+          <p className="font-semibold text-white mt-0.5 truncate">
             {isOutOfBounds ? '⚠️ Outside Boundary' : `✓ Inside ${watershedName}`}
           </p>
+          {latitude && longitude && (
+            <p className="text-[10px] text-gray-400 font-mono mt-0.5">
+              {Number(latitude).toFixed(4)}°, {Number(longitude).toFixed(4)}°
+            </p>
+          )}
         </div>
 
         <div className="bg-gray-900 rounded-lg p-2 border border-gray-800">

@@ -1,5 +1,5 @@
-import { useState, useRef, useCallback } from 'react'
-import { Sparkles, Calendar, Droplets, TrendingUp, Layers, MoveHorizontal } from 'lucide-react'
+import { useState, useRef, useCallback, useEffect } from 'react'
+import { Sparkles, Droplets, TrendingUp, Layers, MoveHorizontal } from 'lucide-react'
 import { useLanguage } from '../../services/i18n.js'
 
 export default function BeforeAfterSwipeMap({
@@ -22,6 +22,18 @@ export default function BeforeAfterSwipeMap({
     const pct = Math.max(5, Math.min(95, (x / rect.width) * 100))
     setSliderPos(pct)
   }, [])
+
+  useEffect(() => {
+    if (!isDragging) return
+    const handlePointerMove = (e) => handleMove(e.clientX)
+    const handlePointerUp = () => setIsDragging(false)
+    window.addEventListener('pointermove', handlePointerMove)
+    window.addEventListener('pointerup', handlePointerUp)
+    return () => {
+      window.removeEventListener('pointermove', handlePointerMove)
+      window.removeEventListener('pointerup', handlePointerUp)
+    }
+  }, [isDragging, handleMove])
 
   const onMouseDown = () => setIsDragging(true)
   const onMouseUp = () => setIsDragging(false)

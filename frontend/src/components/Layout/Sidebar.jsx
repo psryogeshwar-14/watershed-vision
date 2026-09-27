@@ -14,13 +14,6 @@ import clsx from 'clsx'
 import { useWatersheds, useWatershedStats } from '../../hooks/useWatershedData.js'
 import { useLanguage } from '../../services/i18n.js'
 
-const LAYER_OPTIONS = [
-  { key: 'ndvi',       label: 'NDVI Layer',       color: 'bg-green-500',  icon: Layers },
-  { key: 'ndwi',       label: 'NDWI Layer',        color: 'bg-blue-500',   icon: Layers },
-  { key: 'images',     label: 'Field Images',      color: 'bg-amber-500',  icon: Map },
-  { key: 'waterBodies',label: 'Water Bodies',      color: 'bg-cyan-500',   icon: Droplets },
-]
-
 export default function Sidebar({ activeLayers, onLayerToggle, selectedWatershed, onWatershedChange }) {
   const { t, lang } = useLanguage()
   const isHi = lang === 'hi'
@@ -140,6 +133,7 @@ export default function Sidebar({ activeLayers, onLayerToggle, selectedWatershed
                   <span className={clsx('w-2.5 h-2.5 rounded-full shrink-0', isOn ? color : 'bg-gray-300')} />
                   {!collapsed && (
                     <>
+                      <Icon className="w-3.5 h-3.5 opacity-70 shrink-0" />
                       <span className="flex-1 text-left">{label}</span>
                       {isOn ? (
                         <Eye className="w-3.5 h-3.5 opacity-60" />

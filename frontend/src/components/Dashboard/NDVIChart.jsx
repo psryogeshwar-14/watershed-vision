@@ -1,15 +1,12 @@
 import {
   ResponsiveContainer,
-  LineChart,
   Line,
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
-  Legend,
   ReferenceLine,
   Area,
-  AreaChart,
   ComposedChart,
 } from 'recharts'
 import { format, parseISO } from 'date-fns'
