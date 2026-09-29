@@ -24,7 +24,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
-from app.api import analysis, auth, images, satellite, thematic
+from app.api import analysis, auth, drishti, images, satellite, thematic
 from app.core.config import settings
 from app.core.database import create_all_tables
 
@@ -127,6 +127,7 @@ for pfx in ("/api", "/api/v1"):
     app.include_router(satellite.router, prefix=pfx)
     app.include_router(thematic.router,  prefix=pfx)
     app.include_router(analysis.router,  prefix=pfx)
+    app.include_router(drishti.router,   prefix=pfx)
 
 
 # ── Watersheds endpoint (supports direct frontend and proxy requests) ─────────
@@ -215,6 +216,7 @@ def root() -> dict[str, Any]:
             "satellite_api": "/api/v1/satellite",
             "thematic_api":  "/api/v1/thematic",
             "analysis_api":  "/api/v1/analysis",
+            "drishti_api":   "/api/v1/drishti",
             "auth_api":      "/api/v1/auth",
         },
         "mock_mode": {

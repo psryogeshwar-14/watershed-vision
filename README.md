@@ -12,22 +12,46 @@
 
 - 🌐 **Live Web Application (Vercel)**: [https://watershed-vision.vercel.app](https://watershed-vision.vercel.app/)
 - 💻 **GitHub Repository**: [https://github.com/psryogeshwar-14/watershed-vision](https://github.com/psryogeshwar-14/watershed-vision)
-- 📊 **Official SIH Presentation (PDF - 4.18 MB)**: [`WatershedVision_SIH_Presentation.pdf`](./WatershedVision_SIH_Presentation.pdf)
-- 📽️ **Official SIH Presentation (Editable PPTX)**: [`WatershedVision_SIH_Presentation.pptx`](./WatershedVision_SIH_Presentation.pptx)
-- 🎙️ **Speaker Pitch Notes & Evaluation Script**: [`SIH_PRESENTATION_SPEAKER_NOTES.md`](./SIH_PRESENTATION_SPEAKER_NOTES.md)
+- 🛰️ **SRISHTI-DRISHTI Geospatial Sync Center**: `/drishti-sync` (Live on Web App)
+- 📋 **Statutory MoRD Audit Dossier**: `/reports` (Print-to-PDF ready)
 
 ---
 
-## 📑 Executive Summary
+## 📑 Problem Statement & Background Analysis
 
-Watershed development is essential for soil moisture conservation, groundwater recharge, and drought mitigation across rural and semi-arid India. Under programs such as **WDC-PMKSY** (Watershed Development Component of Pradhan Mantri Krishi Sinchayee Yojana), thousands of field photographs are collected using the mobile app **DRISHTI** and stored in the **SRISHTI** portal. 
+### 🎯 Official SIH Problem Statement Details
+- **Problem Statement ID**: `26015`
+- **Problem Statement Title**: *Application of Geospatial Techniques for visualization and analysis to interpret Geo-Coded Images to enhance watershed Development Outcomes.*
+- **Nodal Ministry**: Ministry of Rural Development (MoRD)
+- **Department**: Department of Land Resources (DoLR)
+- **Category**: Software
+- **Theme**: Agriculture, FoodTech & Rural Development
+- **Official Dataset & Reference Link**: [Google Drive PS Folder (DoLR / WDC-PMKSY)](https://drive.google.com/drive/folders/1ibmzWpl_nK7aBhQurs22R9kqh9fPAQwC)
 
-However, existing monitoring approaches suffer from major limitations:
-- **Unanalyzed Field Photos**: Geo-tagged images are collected merely for documentation rather than automated spatial analytics.
-- **Disconnected Data Silos**: Field photographs, 30m satellite data, and cadastral/watershed boundaries are not integrated into a unified analytical view.
-- **Lack of Decision Support**: Administrators lack automated thematic maps, temporal change detection, and AI-driven structure health evaluations.
+---
 
-**WatershedVision** solves this problem by fusing field-level geo-coded photographs with multispectral satellite data (Sentinel-2 / Landsat 30m) and cutting-edge multimodal AI (Google Gemini Vision) to provide a real-time, interactive **Geospatial Command Center** for planners, evaluators, and district officers.
+### 🔍 Background & Diagnosis of the Core Problem
+Watershed development plays a vital role in sustainable management of land, water, and natural resources across rural and semi-arid India under programs like **WDC-PMKSY** (*Watershed Development Component of Pradhan Mantri Krishi Sinchayee Yojana*).
+
+Despite significant investments, monitoring and interpretation remain major challenges:
+1. **Unanalyzed Field Photos**: Field photographs collected via the **DRISHTI** mobile application and deposited into the **SRISHTI** portal are currently treated as **static dead storage** (mere proof-of-work) rather than being analytically interpreted.
+2. **Disconnected Spatial Silos**: Ground-level geo-coded images, 30m satellite data (from SRISHTI / Landsat / Sentinel-2 / ISRO Bhuvan), and watershed cadastral boundaries exist in completely isolated silos.
+3. **Absence of Standardized Visualization Frameworks**: Administrators lack automated thematic maps, temporal change detection, and AI-driven structure health evaluations.
+4. **GPS Spoofing & Verification Gaps**: Lack of automated verification tools to check if field photos match real terrain elevations or if coordinates have been tampered with.
+
+---
+
+### 📊 Scope of the Study Matrix (Resolving PS Mandate)
+*(The original problem statement noted `Scope of the Study: Table to be Added here`. Below is the complete, structured Scope Matrix addressing every facet of the MoRD/DoLR mandate.)*
+
+| Study Component | Target Geospatial Technique | Input Datasets & Sources | Analytical & AI Processing | Expected Output / Deliverable | WDC-PMKSY Administrative Impact |
+|---|---|---|---|---|---|
+| **1. Ground Truth Ingestion & Anti-Spoofing** | Spatial geofencing & 3D radar DEM validation | DRISHTI mobile survey EXIF, SRTM 30m DEM, WGS84 GPS | EXIF parser, Haversine spatial buffer, altitude discrepancy filtering | Verified ground photos with tamper-evident audit badge | Prevents fraudulent contractor billing & GPS spoofing |
+| **2. Computer Vision & Structural Health** | Deep multimodal vision & heuristic inference | Geo-coded field photos (check dams, ponds, bunds) | Google Gemini Vision API / CNN classification, siltation estimation | Structural soundness score (0–100%), siltation grade, desilting notice | Shifts maintenance from reactive to proactive before monsoon |
+| **3. SRISHTI 30m Grid Harmonization** | Satellite raster grid aggregation (30m GSD) | SRISHTI / Bhoonidhi 30m rasters, Sentinel-2 (B2-B8) | Spatial intersection, STAC-compliant band mapping | Geo-coded photos mapped onto exact 30m satellite raster cells | Direct operational integration with ISRO/NRSC SRISHTI platform |
+| **4. Thematic Mapping Hub** | Multispectral index generation & vectorization | Sentinel-2 L2A surface reflectance, SRTM DEM | Normalized Difference algorithms (NDVI, NDWI), Strahler stream ordering | 6 real-time thematic maps (LULC, NDVI, Water Bodies, Drainage, Heatmap) | High-level situational awareness for District Watershed Cells |
+| **5. Temporal Change Detection** | Multi-temporal raster difference analysis | Pre-intervention baseline vs post-monsoon composites | ImageCollection temporal diffing, NDVI gain curves, water spread | Split-screen interactive before/after swipe map & impact stats | Quantifiable evidence of ecological recovery (+NDVI, +water ha) |
+| **6. Decision Support & Prioritization (DSS)** | Multi-criteria spatial decision analysis (MCDA) | NDVI deficits, terrain slope %, DRISHTI erosion points | Weighted overlay modeling (NDVI 35%, Slope 30%, Erosion 25%, Drainage 10%) | Ranked micro-catchment action matrix with prescribed engineering structures & budget | Direct scientific guidance for annual action plans (AAP) |
 
 ---
 
@@ -39,9 +63,9 @@ However, existing monitoring approaches suffer from major limitations:
 | **b) Improved Geo-Coded Image Interpretation** | Automated AI classification of field images into 7 watershed categories with confidence scoring and recommendations. | Google Gemini 1.5 Flash Vision API with deterministic heuristic fallback. |
 | **c) Generation of Thematic Maps & Products** | Real-time generation of NDVI (vegetation), NDWI (water bodies), LULC (land use), drainage lines, and KDE intervention heatmaps. | GDAL/Rasterio, Google Earth Engine, PostGIS spatial clustering, and Recharts. |
 | **d) Enhanced Watershed Monitoring & Assessment** | Multi-temporal before/after change detection tracking vegetation recovery and water storage changes. | Earth Engine ImageCollection diffing, NDVI trend timeseries, and composite Watershed Health Index (0–100). |
-| **e) Scientific Support for Decision-Making** | Instant generation of evidence-based PDF analytical dossiers with component scores. | FastAPI `/analysis/report-data` endpoint and interactive Reports builder. |
+| **e) Scientific Support for Decision-Making** | Automated Intervention Prioritization Matrix & instant generation of evidence-based PDF analytical dossiers. | FastAPI `/analysis/prioritization` and `/analysis/report-data` endpoints with Reports builder. |
 | **f) Scalable and Cost-Effective Approach** | Fully containerized with Docker, zero licensing fees, free open satellite data, and offline mock capability. | Docker Compose, FastAPI (Python 3.11), PostGIS 15, and Vite SPA. |
-| **g) Strengthening Use of SRISHTI-DRISHTI** | Directly ingests DRISHTI-style EXIF metadata (GPS, altitude, device, timestamp) and aligns with SRISHTI 30m raster standards. | `piexif` / `Pillow` EXIF parser and Bhoonidhi/Copernicus STAC-compliant schemas. |
+| **g) Strengthening Use of SRISHTI-DRISHTI** | **SRISHTI-DRISHTI Geospatial Integration Center (`/drishti-sync`)**: Ingests WDC-PMKSY work codes, verifies EXIF altitude vs SRTM 30m DEM, maps photos to SRISHTI 30m raster grid cells, and tracks Pre vs Post work progression. | [drishti.py](file:///Users/psryogeshwar/Documents/Documents/Project/SIH/backend/app/api/drishti.py), [DrishtiSync.jsx](file:///Users/psryogeshwar/Documents/Documents/Project/SIH/frontend/src/pages/DrishtiSync.jsx), and Bhoonidhi/Copernicus STAC-compliant schemas. |
 
 ---
 
@@ -91,6 +115,14 @@ The frontend is built using a dark, high-contrast command center aesthetic tailo
   - PostGIS boundary polygons with live tooltip highlighting.
   - Geo-image markers dynamically colored by activity type (Afforestation, Water Body, Check Dam, Contour Bund, etc.).
   - Interactive layer toggle (NDVI raster, NDWI water bodies, drainage polylines, image markers).
+- **🛰️ SRISHTI-DRISHTI Integration & Ingestion Center (`/drishti-sync`)**:
+  - Direct integration bridge fusing field-collected DRISHTI mobile survey photographs with SRISHTI 30m satellite rasters.
+  - Ingests WDC-PMKSY work codes, asset IDs, Gram Panchayat metadata, and surveyor device details.
+  - Work Stage Progression tracker (Pre-Work baseline vs During-Work execution vs Post-Work completed impact).
+  - SRISHTI 30m Ground Sampling Distance (GSD) pixel grid overlay matching ISRO Bhuvan standards.
+- **🎯 Scientific Decision Support System (DSS) Prioritization Matrix**:
+  - Automatically synthesizes satellite NDVI vegetative deficits, SRTM 30m slope gradients, drainage stream orders, and DRISHTI field erosion photos.
+  - Generates ranked micro-catchment intervention dossiers with primary structures (masonry check dams), bio-engineering barriers (vetiver / CCT), and budget outlays.
 - **🔀 Before/After Temporal Swipe Map**:
   - Split-pane interactive comparison slider on `/watershed/:id` allowing side-by-side inspection of pre-intervention baseline vs post-monsoon satellite imagery.
 - **Executive Analytics Dashboard**:

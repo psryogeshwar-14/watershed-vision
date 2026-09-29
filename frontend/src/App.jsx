@@ -5,6 +5,7 @@ import WatershedAnalysis from './pages/WatershedAnalysis.jsx'
 import ThematicMaps from './pages/ThematicMaps.jsx'
 import ImageGalleryPage from './pages/ImageGallery.jsx'
 import Reports from './pages/Reports.jsx'
+import DrishtiSync from './pages/DrishtiSync.jsx'
 
 const router = createBrowserRouter([
   {
@@ -15,6 +16,7 @@ const router = createBrowserRouter([
       { path: 'watershed/:id', element: <WatershedAnalysis /> },
       { path: 'thematic-maps', element: <ThematicMaps /> },
       { path: 'gallery', element: <ImageGalleryPage /> },
+      { path: 'drishti-sync', element: <DrishtiSync /> },
       { path: 'reports', element: <Reports /> },
     ],
   },

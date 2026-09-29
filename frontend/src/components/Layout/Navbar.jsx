@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom'
-import { Droplets, Map, Image, BarChart2, FileText, Menu, X, ShieldCheck } from 'lucide-react'
+import { Droplets, Map, Image, BarChart2, FileText, Menu, X, ShieldCheck, Radio } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import clsx from 'clsx'
 import LanguageToggle from './LanguageToggle.jsx'
@@ -21,6 +21,7 @@ export default function Navbar() {
     { to: '/', label: t('navMap'), icon: Map },
     { to: '/gallery', label: t('navGallery'), icon: Image },
     { to: '/thematic-maps', label: t('navThematic'), icon: BarChart2 },
+    { to: '/drishti-sync', label: t('navDrishti'), icon: Radio },
     { to: '/reports', label: t('navReports'), icon: FileText },
   ]
 

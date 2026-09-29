@@ -6,6 +6,16 @@
   "department": "Department of Land Resources (DoLR)",
   "theme": "Agriculture, FoodTech & Rural Development",
   "description": "Geospatial platform for watershed monitoring and geo-coded image interpretation using Sentinel-2 satellite data and AI image analysis",
+  "dataset_link": "https://drive.google.com/drive/folders/1ibmzWpl_nK7aBhQurs22R9kqh9fPAQwC",
+  "expected_solutions": [
+    "a) Integrated Geospatial Visualization Framework",
+    "b) Improved Geo-Coded Image Interpretation",
+    "c) Generation of Thematic Maps and Visualization Products",
+    "d) Enhanced Watershed Monitoring and Assessment",
+    "e) Scientific Support for Decision-Making (DSS)",
+    "f) Scalable and Cost-Effective Monitoring Approach",
+    "g) Strengthening Use of the SRISHTI-DRISHTI Platform"
+  ],
   "tech_stack": {
     "frontend": "React 18 + Vite + Leaflet.js + Tailwind CSS",
     "backend": "FastAPI (Python 3.11)",

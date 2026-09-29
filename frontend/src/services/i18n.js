@@ -12,6 +12,7 @@ const TRANSLATIONS = {
     navMap: 'Command Map',
     navGallery: 'Field Photos',
     navThematic: 'Thematic Maps',
+    navDrishti: 'SRISHTI-DRISHTI Sync',
     navReports: 'Audit Reports',
     
     // Ticker Stats / Hero Banner
@@ -155,6 +156,7 @@ const TRANSLATIONS = {
     navMap: 'कमांड मैप',
     navGallery: 'फील्ड तस्वीरें',
     navThematic: 'थीमैटिक मानचित्र',
+    navDrishti: 'सृष्टि-दृष्टि सिंक',
     navReports: 'ऑडिट रिपोर्ट',
     
     // Ticker Stats / Hero Banner

@@ -202,7 +202,11 @@ def get_intervention_heatmap(
     if activity_type:
         query = query.filter(GeoImage.activity_type == activity_type)
 
-    images = query.all()
+    try:
+        images = query.all()
+    except Exception as exc:
+        logger.debug("Database heatmap query fallback: %s", exc)
+        images = []
 
     if not images:
         # Return mock heatmap when no real data exists

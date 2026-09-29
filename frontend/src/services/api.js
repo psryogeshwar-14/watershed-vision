@@ -143,6 +143,49 @@ export async function getChangeDetection(watershedId, beforeDate, afterDate) {
   })
 }
 
+/**
+ * Get DSS intervention prioritization matrix
+ */
+export async function getInterventionPrioritization(watershedId = 'bhor') {
+  return api.get('/analysis/prioritization/', {
+    params: { watershed_id: watershedId },
+  })
+}
+
+// ─── SRISHTI-DRISHTI Endpoints ───────────────────────────────────
+
+/**
+ * Get all DRISHTI field survey assets
+ */
+export async function getDrishtiAssets(filters = {}) {
+  return api.get('/drishti/assets', { params: filters })
+}
+
+/**
+ * Get DRISHTI-to-SRISHTI synchronization stats
+ */
+export async function getDrishtiSyncStats(watershedId) {
+  return api.get('/drishti/sync-stats', {
+    params: { watershed_id: watershedId },
+  })
+}
+
+/**
+ * Ingest or sync a batch of DRISHTI mobile records
+ */
+export async function syncDrishtiBatch(payload) {
+  return api.post('/drishti/batch-sync', payload)
+}
+
+/**
+ * Get SRISHTI 30m satellite pixel grid overlay
+ */
+export async function getSrishtiGrid(watershedKey = 'bhor') {
+  return api.get('/drishti/srishti-grid', {
+    params: { watershed_key: watershedKey },
+  })
+}
+
 // ─── Watershed Endpoints ──────────────────────────────────────────
 
 /**
@@ -153,3 +196,4 @@ export async function getWatersheds() {
 }
 
 export default api
+
